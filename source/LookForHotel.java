@@ -15,7 +15,7 @@ public class LookForHotel{
 	 * @param args les arguments n'en comportant qu'un seul qui indique le critère
 	 *          de localisation
 	 */
-	public LookForHotel(String... args){
+	public LookForHotel(String... args){ 
 		localisation = args[0];
 	}
 	/**
