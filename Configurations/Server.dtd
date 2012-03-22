@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT server (port,(service | agent)*)>
+	
+<!ELEMENT port EMPTY>
+<!ATTLIST port value CDATA #REQUIRED>
+	
+<!ELEMENT service EMPTY>
+<!ATTLIST service name CDATA #REQUIRED>
+<!ATTLIST service codebase CDATA #IMPLIED>
+<!ATTLIST service class CDATA #REQUIRED>
+<!ATTLIST service args CDATA #IMPLIED>
+	
+<!ELEMENT agent (etape)*>
+<!ATTLIST agent class CDATA #REQUIRED>
+<!ATTLIST agent codebase CDATA #IMPLIED>
+<!ATTLIST agent args CDATA #IMPLIED>
+	
+<!ELEMENT etape EMPTY>
+<!ATTLIST etape server CDATA #REQUIRED>
+<!ATTLIST etape action CDATA #REQUIRED>
