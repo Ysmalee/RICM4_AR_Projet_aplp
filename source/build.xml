@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Mobil-Agent-Objectif1" basedir=".">
+	
+	<!-- Création des dossiers -->
+	<target name="init">
+		<mkdir dir="build" />
+		<mkdir dir="dist" />
+	</target>	
+
+	<!-- Compilation des sources -->
+	<target name="compile">      
+		<javac srcdir="."         
+			destdir="build"
+			includeantruntime="false"
+			debug="on"/>
+    	</target>
+	
+	<!-- Création du jar Chaine -->
+	<target name="chaine" depends="compile">
+		<jar destfile="dist/Chaine.jar" basedir="build">
+			<manifest>
+				<attribute name="Main-Class" value="Chaine"/>
+			</manifest>		
+		</jar>
+	</target>
+
+	<!-- Création du jar Annuaire -->
+	<target name="annuaire" depends="compile">
+		<jar destfile="Annuaire.jar" basedir="build">
+			<manifest>
+				<attribute name="Main-Class" value="Annuaire"/>
+			</manifest>		
+		</jar>
+	</target>
+	
+	<!-- Création du jar LookForHotel -->
+	<target name="lookforhotel" depends="compile">
+		<jar destfile="LookForHotel.jar" basedir="build">
+			<manifest>
+				<attribute name="Main-Class" value="LookForHotel"/>
+			</manifest>		
+		</jar>
+	</target>
+
+	<!-- Création du jar RegistryServer -->
+	<target name="registryserver" depends="compile">
+		<jar destfile="RegistryServer.jar" basedir="build">
+			<manifest>
+				<attribute name="Main-Class" value="RegistryServer"/>
+			</manifest>		
+		</jar>
+	</target>
+
+	<!-- Clean -->		
+	<target name="clean" description="Fait le menage">
+        	<delete dir="build" />
+        	<delete dir="dist" />
+	</target>
+
+	<!-- ALL -->
+	<target name="all" depends="init,compile,chaine,annuaire,lookforhotel,registryserver"/>
+
+<!--
+	 Exécution du jar Server 
+	<target name="server">
+    		<java jar="dist/Server.jar" fork="true">
+      			<sysproperty key="java.security.policy" value="src/Server.policy"/>
+			<sysproperty key="java.security.manager" value=""/>
+			<arg value="supplier"/>
+			<arg value="1099"/>
+			<arg value="5"/>			
+    		</java>
+  	</target>
+
+	 Exécution du jar Client
+	<target name="client">
+    		<java jar="dist/Client.jar" fork="true">
+      			<sysproperty key="java.security.policy" value="src/Client.policy"/>
+			<sysproperty key="java.security.manager" value=""/>
+			<arg value="localhost"/>
+			<arg value="supplier"/>
+			<arg value="5"/>
+			<arg value="3"/>			
+    		</java>
+  	</target>
+-->
+</project>
