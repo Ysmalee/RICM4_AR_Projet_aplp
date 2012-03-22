@@ -24,7 +24,7 @@ public class Parser_Annuaire {
 		}
 	}
 	
-	Numero get_hotels_from_xml(String nomCherche){
+	Numero get_numero_from_xml(String nomCherche){
 		for (int i = 0; i < liste.size(); i++) {
 			Element node = (Element) liste.get(i);
 			String nom = node.getAttributeValue("name");

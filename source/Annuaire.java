@@ -11,12 +11,13 @@ public class Annuaire extends UnicastRemoteObject implements _Annuaire {
 	 * Fichier contenant l'annuaire
 	 */
 	private File _dataFile;
+	private Parser_Annuaire _parser;
 
 
 
 	/**
-	 * Création d'un annuaire
-	 * @param dataFile Fichier xml contenant les informations des abonnés
+	 * Cr��ation d'un annuaire
+	 * @param dataFile Fichier xml contenant les informations des abonn��s
 	 * @throws RemoteException
 	 */
 	protected Annuaire(String dataFile) throws RemoteException {
@@ -27,12 +28,10 @@ public class Annuaire extends UnicastRemoteObject implements _Annuaire {
 
 	@Override
 	/**
-	 * Retourne le numéro de l'abonné passé en parametre
+	 * Retourne le num��ro de l'abonn�� pass�� en parametre
 	 */
 	public Numero get(String abonne) throws RemoteException {
-		Numero num = null;
-
-
+		Numero num = _parser.get_numero_from_xml(abonne);
 		return num;
 	}
 
@@ -52,7 +51,7 @@ public class Annuaire extends UnicastRemoteObject implements _Annuaire {
 		String dataFile = null;
 		int port = 0;
 
-		// récupération des arguments
+		// r��cup��ration des arguments
 		if (args.length!=3){
 			System.out.println("Annuaire <data file> <registry host> <registry port>");
 			System.exit(1);
@@ -67,7 +66,7 @@ public class Annuaire extends UnicastRemoteObject implements _Annuaire {
 		}
 
 
-		//Création/Connexion de l'objet registry
+		//Cr��ation/Connexion de l'objet registry
 		try {
 			//reg = LocateRegistry.createRegistry(port);
 			reg = LocateRegistry.getRegistry(host, port);

@@ -13,10 +13,11 @@ public class Chaine extends UnicastRemoteObject implements _Chaine {
 
 	private File _data;
 	private String _name;
+	private Parser_Hotel _parser;
 
 	
 	/**
-	 * Crée un objet chaine qui sera enregistré dans le registry
+	 * Cr��e un objet chaine qui sera enregistr�� dans le registry
 	 * @param name Nom de la chaine
 	 * @param dataFile Fichier contenant les informations sur les hotels
 	 * @throws Exception
@@ -28,21 +29,17 @@ public class Chaine extends UnicastRemoteObject implements _Chaine {
 			throw new Exception("Data file does not exist");
 		}
 		this._name = name;
+		this._parser = new Parser_Hotel(_data);
 	}
 
 
 
 	@Override
 	/**
-	 * Retourne la liste des hotels de la chaine correspondant à la localisation
+	 * Retourne la liste des hotels de la chaine correspondant �� la localisation
 	 */
 	public List<Hotel> get(String localisation) throws RemoteException {
-		List<Hotel> listRes = new ArrayList<Hotel>();
-
-		//Lecture de la source d'info
-
-
-
+		List<Hotel> listRes = _parser.get_hotels_from_xml(localisation);
 		return listRes;
 	}
 	
@@ -53,7 +50,7 @@ public class Chaine extends UnicastRemoteObject implements _Chaine {
 	
 	
 	/**
-	 * Fonction permettant de créer une nouvelle chaine d'hotel
+	 * Fonction permettant de cr��er une nouvelle chaine d'hotel
 	 * puis de l'enregistrer dans le registry
 	 * @param args
 	 */
@@ -64,7 +61,7 @@ public class Chaine extends UnicastRemoteObject implements _Chaine {
 		String dataFile = null;
 		int port = 0;
 
-		// récupération des arguments
+		// r��cup��ration des arguments
 		if (args.length!=4){
 			System.out.println("Chaine <hotel name> <data file> <registry host> <registry port>");
 			System.exit(1);
@@ -80,7 +77,7 @@ public class Chaine extends UnicastRemoteObject implements _Chaine {
 		}
 
 		
-		//Création/Connexion de l'objet registry
+		//Cr��ation/Connexion de l'objet registry
 		try {
 			//reg = LocateRegistry.createRegistry(port);
 			reg = LocateRegistry.getRegistry(host, port);
