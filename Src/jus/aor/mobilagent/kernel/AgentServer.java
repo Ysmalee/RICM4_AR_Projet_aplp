@@ -1,10 +1,11 @@
 package jus.aor.mobilagent.kernel;
 
-public class AgentServer 
-{
-    public AgentServer()
-    {
-        
+public class AgentServer extends Thread{
+	
+	private int _port;
+	
+    public AgentServer(int port){
+        this._port=port;
     }
     
     /**
@@ -15,21 +16,20 @@ public class AgentServer
     }
     
     /**
-     * retourne un service
+     * Retourne un service
      */
-    public _Service getService()
-    {
-        
-    }
+//    public _Service getService(){
+//        
+//    }
     
-    /*
-     * Boucle de réceptio, des agens
+    /**
+     * Boucle de réception des agents
      */
     public void run()
     {
         while (true)
         {
-            //Recevoir les agents   
+            //Recevoir les agents  
         }
     }
 }

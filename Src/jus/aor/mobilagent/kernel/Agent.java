@@ -1,8 +1,7 @@
 package jus.aor.mobilagent.kernel;
 
-public class Agent implements _Agent
-{
-    private AgentLoader agentLoader;
+public class Agent implements _Agent{
+    private BAMLoader agentLoader;
     private AgentServer server;
     private Route route;
     

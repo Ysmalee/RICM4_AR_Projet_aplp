@@ -3,7 +3,6 @@ package jus.aor.mobilagent.kernel;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
-import jus.util.Dialogue;
 
 /**
  * Un Handler permettant d'écrire sur le support IO.

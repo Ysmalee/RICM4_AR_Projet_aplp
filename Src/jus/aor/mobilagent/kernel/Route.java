@@ -21,6 +21,9 @@ class Route implements Iterable<Etape>, Serializable{
 	protected Etape retour;
 	/** Indique si la feuille de route est épuisée ou non. */
 	protected boolean hasNext;
+	/** Indice de l'étape courante*/
+	protected int _indiceEtapeCourante;
+	
 	/**
 	 * Construction d'une route.
 	 * @param retour  le server initial et de retour.
@@ -29,31 +32,46 @@ class Route implements Iterable<Etape>, Serializable{
 		route = new LinkedList<Etape>();
 		this.retour = retour;
 		hasNext=true;
+		_indiceEtapeCourante=0;
 	}
+	
 	/**
 	 * Ajoute une étape en fin de route.
 	 * @param e l'étape à ajouter
 	 */
-	public void add(Etape e) { route.add(route.size(),e);}
+	public void add(Etape e) {route.add(route.size(),e);}
+	
 	/**
 	 * Restitue la prochaine étape ou la dernière qui est la base de départ.
 	 * @return la prochaine étape.
 	 */
 	Etape get() throws NoSuchElementException {
-		//A COMPLETER
+		if (hasNext){
+			return route.get(_indiceEtapeCourante+1);
+		} else {
+			return retour;
+		}
 	}
+	
 	/**
 	 * Restitue la prochaine étape et élimine de la route ou la dernière qui est la base de départ.
 	 * @return la prochaine étape.
 	 */
 	Etape next() throws NoSuchElementException {
-		//A COMPLETER
+		if (_indiceEtapeCourante<route.size()-1){
+			_indiceEtapeCourante++;
+			return route.get(_indiceEtapeCourante);
+		} else {
+			hasNext=false;
+			return retour;
+		}
 	}
+	
 	/**
 	 * Il y a-t-il encore une étape à parcourir.
 	 * @return vrai si une étape est possible.
 	 */
-	public boolean hasNext() { return hasNext;}
+	public boolean hasNext() {return hasNext;}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Iterable#iterator()
