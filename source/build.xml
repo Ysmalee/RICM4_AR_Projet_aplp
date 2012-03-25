@@ -9,10 +9,11 @@
 
 	<!-- Compilation des sources -->
 	<target name="compile">      
-		<javac srcdir="."         
-			destdir="build"
-			includeantruntime="false"
-			debug="on"/>
+		<javac srcdir="." destdir="build" includeantruntime="false" debug="on">
+		<classpath>
+			<pathelement path = "../lib/jdom-1.1.3.jar"/>
+		</classpath>
+		</javac>
     	</target>
 	
 	<!-- Création du jar Chaine -->
