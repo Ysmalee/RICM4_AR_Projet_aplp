@@ -58,7 +58,9 @@ public class AgentServer extends Thread{
 			System.out.println("Waiting for agent...");
 			try {
 				agentSocket = ss.accept();
-			} catch (IOException e) {
+				ObjectInputStream ois = new ObjectInputStream(agentSocket.getInputStream());
+				Agent agentRecu = (Agent) ois.readObject();
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			System.out.println("Agent " + agentSocket.getInetAddress() + " arrived");
@@ -69,8 +71,7 @@ public class AgentServer extends Thread{
      * @throws IOException 
      */
     public void runAgent() throws IOException{
-			ObjectInputStream ois = new ObjectInputStream(agentSocket.getInputStream());
-			ObjectOutputStream ous = new ObjectOutputStream(agentSocket.getOutputStream());
+
     }
     
     public void site(){

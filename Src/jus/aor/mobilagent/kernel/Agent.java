@@ -79,9 +79,10 @@ public class Agent extends Thread implements _Agent{
      */
     public void sendAgent(){
     	try{
-    		//agentSocket = new Socket(route.next().server.toString(), port);
-			ObjectInputStream ois = new ObjectInputStream(agentSocket.getInputStream());
+    		agentSocket = new Socket(route.next().server.toString(), route.next().server.getPort());
+			//ObjectInputStream ois = new ObjectInputStream(agentSocket.getInputStream());
 			ObjectOutputStream ous = new ObjectOutputStream(agentSocket.getOutputStream());
+			ous.writeObject(this);
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
