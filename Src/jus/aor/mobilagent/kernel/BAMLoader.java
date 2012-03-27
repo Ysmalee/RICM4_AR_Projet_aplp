@@ -1,13 +1,15 @@
 package jus.aor.mobilagent.kernel;
 
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.JarException;
 
 public class BAMLoader extends URLClassLoader {
 	
-	Map<String,Class<?>> cache = new HashMap<String,Class<?>>();
+	Map<String,byte[]> cache = new HashMap<String,byte[]>();
 	Jar ressources;
 	
 	/**
@@ -21,15 +23,18 @@ public class BAMLoader extends URLClassLoader {
 		super(urls,parent);
 	}
 	
-	public BAMLoader(String jar){
-		super(null);		
-	}
-	
 	/**
 	 * Ajoute un repository au BAMLoader
 	 */
 	protected void addURL(URL url){
 		super.addURL(url);
+		try {
+			Jar jar = new Jar(url.getFile());
+			this.integrateCode(jar);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -46,13 +51,13 @@ public class BAMLoader extends URLClassLoader {
 	 */
 	public Class<?> findClass(String name) throws ClassNotFoundException {
 		try {
-			return super.findClass(name);
+			return super.findClass(ressources.formatClassName(name));
 		} catch (ClassNotFoundException e) {
-			Class<?> classe = cache.get(name);
+			byte[] classe = cache.get(ressources.formatClassName(name));
 			if(classe==null){
 				throw new ClassNotFoundException ("class "+classe+" not found.");
 			}
-			return classe;
+			return this.defineClass(name,classe, 0, classe.length);
 		}
 	}
 	
@@ -63,8 +68,8 @@ public class BAMLoader extends URLClassLoader {
 	public void integrateCode(Jar jar){
 		for(Map.Entry<String,byte[]> e : jar.classIterator()){
 			String name = e.getKey();
-			Class<?> classe = e.getClass();
-			cache.put(name, classe);			
+			byte[] classe = e.getValue();
+			cache.put(name,classe);			
 		}
 	}
 }
