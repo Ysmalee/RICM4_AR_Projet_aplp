@@ -13,12 +13,22 @@ public class AgentServer extends Thread{
 	
 	/** port du serveur */
 	private int _port;
+	/** Socket du serveur */
+	private ServerSocket ss;
+	/** Socket de l'agent */
+	private Socket agentSocket;
 	
 	/** 	 */
 	Map<String,_Service<?>> _services = new HashMap<String,_Service<?>>();
 	
     public AgentServer(int port){
         this._port=port;
+        try {
+			ss = new ServerSocket(port);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     /**
@@ -40,28 +50,27 @@ public class AgentServer extends Thread{
 //    }
     
     /**
-     * Lancement du server d'agents
+     * Boucle de réception des agents
      */
     public void run(){
-
+    	//Attente d'un agent
+    	while (true){
+			System.out.println("Waiting for agent...");
+			try {
+				agentSocket = ss.accept();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			System.out.println("Agent " + agentSocket.getInetAddress() + " arrived");
+		}
     }
     
     /**
-     * Boucle de réception des agents
+     * @throws IOException 
      */
-    public void runAgent(){
-		try {
-			ServerSocket ss = new ServerSocket(_port);
-			while (true){
-    			Socket socket = ss.accept();
-    			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-    			ObjectOutputStream ous = new ObjectOutputStream(socket.getOutputStream());
-    			
-    		}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    public void runAgent() throws IOException{
+			ObjectInputStream ois = new ObjectInputStream(agentSocket.getInputStream());
+			ObjectOutputStream ous = new ObjectOutputStream(agentSocket.getOutputStream());
     }
     
     public void site(){
@@ -73,5 +82,13 @@ public class AgentServer extends Thread{
      */
     public String toString(){
     	return this.toString();
+    }
+    
+    /**
+     * Getter pour récupérer le port du serveur
+     * @return port du serveur
+     */
+    public int getPort(){
+    	return _port;
     }
 }

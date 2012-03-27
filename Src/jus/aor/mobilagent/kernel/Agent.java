@@ -1,5 +1,9 @@
 package jus.aor.mobilagent.kernel;
 
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.Socket;
@@ -14,6 +18,7 @@ public class Agent extends Thread implements _Agent{
     private AgentServer server;
     private Route route;
     protected Class<?> classe;
+	private Socket agentSocket;
     
   
     /**
@@ -59,12 +64,13 @@ public class Agent extends Thread implements _Agent{
      */
     @Override
     public void run() {
+    	//L'agent exécute son action courante
     	if (route.hasNext){
     		route.get().action.execute();
-    		//sendAgent();
     	} else {
     		route.retour.action.execute();
-    		//sendAgent();
+        	//Envoi de l'agent
+    		sendAgent();
     	}
     }
    
@@ -72,7 +78,13 @@ public class Agent extends Thread implements _Agent{
      * Envoi de l'agent sur le prochain serveur
      */
     public void sendAgent(){
-    	Socket s = new Socket();
+    	try{
+    		//agentSocket = new Socket(route.next().server.toString(), port);
+			ObjectInputStream ois = new ObjectInputStream(agentSocket.getInputStream());
+			ObjectOutputStream ous = new ObjectOutputStream(agentSocket.getOutputStream());
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
     
 }
