@@ -21,18 +21,15 @@ class Route implements Iterable<Etape>, Serializable{
 	protected Etape retour;
 	/** Indique si la feuille de route est épuisée ou non. */
 	protected boolean hasNext;
-	/** Indice de l'étape courante*/
-	protected int _indiceEtapeCourante;
 	
 	/**
 	 * Construction d'une route.
-	 * @param retour  le server initial et de retour.
+	 * @param retour le server initial et de retour.
 	 */
 	public Route(Etape retour) {
 		route = new LinkedList<Etape>();
 		this.retour = retour;
 		hasNext=true;
-		_indiceEtapeCourante=0;
 	}
 	
 	/**
@@ -47,7 +44,7 @@ class Route implements Iterable<Etape>, Serializable{
 	 */
 	Etape get() throws NoSuchElementException {
 		if (hasNext){
-			return route.get(_indiceEtapeCourante+1);
+			return route.get(0);
 		} else {
 			return retour;
 		}
@@ -58,11 +55,14 @@ class Route implements Iterable<Etape>, Serializable{
 	 * @return la prochaine étape.
 	 */
 	Etape next() throws NoSuchElementException {
-		if (_indiceEtapeCourante<route.size()-1){
-			_indiceEtapeCourante++;
-			return route.get(_indiceEtapeCourante);
+		if (hasNext){
+			Etape nextEtape = this.get();
+			route.remove(0); //supprime l'étape à venir
+			if (route.size()==0){
+				hasNext = false;
+			}
+			return nextEtape;
 		} else {
-			hasNext=false;
 			return retour;
 		}
 	}

@@ -19,21 +19,26 @@ public class Hello extends Agent{
 	  * construction d'un agent de type hello.
 	  * @param args aucun argument n'est requis
 	  */
-	 public Hello(Object... args) {
-		 // ....
-	 }
+	 public Hello(Object... args) {}
+	 
 	 /**
 	 * l'action à entreprendre sur les serveurs visités  
 	 */
-	protected _Action doIt = new _Action(){
-		// ...
+	protected _Action doIt = new _Action() {
+		
+		@Override
+		public void execute() {
+			System.out.println("Hello !!!");
+			
+		}
 	};
+	
 	/* (non-Javadoc)
 	 * @see jus.aor.mobilagent.kernel.Agent#retour()
 	 */
-	@Override
+	//@Override
 	protected _Action retour(){
-		// return ...;
+		return doIt;
 	}
-	// ...
+
 }

@@ -131,7 +131,7 @@ public class Jar implements Iterable<Map.Entry<String,byte[]>>, Serializable{
 	 * @param className le nom logique de la classe
 	 * @return
 	 */
-	protected String formatClassName(String className) { return className.replace(".","/")+".class";}
+	public static String formatClassName(String className) { return className.replace(".","/")+".class";}
 	/**
 	 * indique si le nom de la ressource est une classe (se termine par .class).
 	 * @param name le nom de la ressource

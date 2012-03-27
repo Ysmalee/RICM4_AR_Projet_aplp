@@ -33,6 +33,7 @@ public final class Server {
 	 * @param name le nom du serveur
 	 */
 	public Server(final int port, final String name){
+		System.err.println("Creation serveur");
 		this.name=name;
 		try {
 			this.port=port;
@@ -73,8 +74,28 @@ public final class Server {
 	 */
 	public final void deployAgent(String classeName, Object[] args, String codeBase, List<String> etapeAddress, List<String> etapeAction) {
 		try {
-			//A COMPLETER
-		}catch(Exception ex){
+        	
+			//Création de l'agent
+			BAMLoader agentLoader = new BAMLoader();
+        	agentLoader.addURL(new URL(codeBase));
+        	Class<?> classe = (Class<?>)Class.forName(classeName,true,agentLoader);
+        	Agent agentRunning = (Agent)classe.getConstructor(int.class,String.class).newInstance(args);
+        	
+        	//Instanciation de l'agent
+        	agentRunning.init(agentLoader, agentServer, name);
+        	
+        	//Création de la route de l'agent
+        	if (etapeAddress.size() == etapeAction.size()){
+	        	for (int i=0;i<etapeAddress.size();i++){
+	        		_Action a = (_Action) getClass().getDeclaredField(etapeAction.get(i)).get(null);
+	        		Etape e = new Etape(new URI(etapeAddress.get(i)),a);
+	        		agentRunning.addEtape(e);
+	        	}
+        	} else {
+        		throw new Exception("Les tailles des listes d'étapes et d'actions sont différentes");
+        	}
+        	
+   		}catch(Exception ex){
 			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
 			return;
 		}
