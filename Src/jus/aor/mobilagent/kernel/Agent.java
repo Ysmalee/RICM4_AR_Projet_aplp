@@ -66,7 +66,9 @@ public class Agent extends Thread implements _Agent{
     public void run() {
     	//L'agent exécute son action courante
     	if (route.hasNext){
-    		route.get().action.execute();
+    		route.next().action.execute();
+    		//Envoi de l'agent
+    		sendAgent();
     	} else {
     		route.retour.action.execute();
         	//Envoi de l'agent
@@ -79,10 +81,10 @@ public class Agent extends Thread implements _Agent{
      */
     public void sendAgent(){
     	try{
-    		agentSocket = new Socket(route.next().server.toString(), route.next().server.getPort());
-			//ObjectInputStream ois = new ObjectInputStream(agentSocket.getInputStream());
+    		agentSocket = new Socket(route.get().server.toString(), route.get().server.getPort());
 			ObjectOutputStream ous = new ObjectOutputStream(agentSocket.getOutputStream());
 			ous.writeObject(this);
+			agentSocket.close();
     	} catch (Exception e) {
     		e.printStackTrace();
     	}

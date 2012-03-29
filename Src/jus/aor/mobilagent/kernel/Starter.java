@@ -77,7 +77,7 @@ public class Starter{
 	}
 	public void createServer(int port, String name) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		loader = new BAMLoader();
-		loader.addURL(new URL("file:///home/tim/workspace/Server/MobilAgent.jar"));
+		loader.addURL(new URL("file:///home/tim/RICM4_AR_Projet_aplp/Src/jus/aor/mobilagent/jar/MobilAgent.jar"));
 		classe = (Class<?>)Class.forName("jus.aor.mobilagent.kernel.Server",true,loader);
 		server = classe.getConstructor(int.class,String.class).newInstance(port,name);
 	}

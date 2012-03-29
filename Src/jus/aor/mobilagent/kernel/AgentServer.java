@@ -5,7 +5,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.rmi.server.SocketSecurityException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,15 +21,18 @@ public class AgentServer extends Thread{
 	/** Socket de l'agent */
 	private Socket agentSocket;
 	
-	/** 	 */
+	
+	/**Jar contenant les services */
+	Jar services;
+	/** Map contenant les différents sesrvices offerts par le serveur */
 	Map<String,_Service<?>> _services = new HashMap<String,_Service<?>>();
 	
+	/**Constructeur*/
     public AgentServer(int port){
         this._port=port;
         try {
-			ss = new ServerSocket(port);
+			ss = new ServerSocket(_port);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
@@ -34,20 +40,20 @@ public class AgentServer extends Thread{
     /**
      * Ajout d'un service
 	 * @param name nom du service
-	 * @param classeName classe du service
-	 * @param codeBase codebase du service
-	 * @param args arguments de construction du service
+	 * @param service service à ajouter
      */
-    void addService(String name, String classeName, String codeBase, Object[] args) {
-        
-    }
+    public void addService(String name, _Service<?> service) {
+    	_services.put(name, service);
+	}
     
     /**
      * Retourne un service
+     * @param name nom du service
      */
-//    public _Service getService(){
-//        
-//    }
+    public _Service<?> getService(String name){
+    	_Service<?> service = _services.get(name);
+    	return service;
+    }
     
     /**
      * Boucle de réception des agents
@@ -58,8 +64,15 @@ public class AgentServer extends Thread{
 			System.out.println("Waiting for agent...");
 			try {
 				agentSocket = ss.accept();
-				ObjectInputStream ois = new ObjectInputStream(agentSocket.getInputStream());
-				Agent agentRecu = (Agent) ois.readObject();
+				
+				//Récupération du jar de l'agent
+				Jar jar = (Jar)(new ObjectInputStream(agentSocket.getInputStream())).readObject();
+				BAMLoader agentLoader = new BAMLoader();
+				agentLoader.integrateCode(jar);
+				
+				//Récupération de l'agent
+				AgentInputStream ais = new AgentInputStream(agentSocket.getInputStream(), agentLoader);
+				_Agent agentRecu = (_Agent) ais.readObject();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -68,21 +81,24 @@ public class AgentServer extends Thread{
     }
     
     /**
-     * @throws IOException 
-     */
-    public void runAgent() throws IOException{
-
-    }
-    
-    public void site(){
-    	
+	 * Restitue l'URI de ce serveur qui est de la forme : "mobilagent://<host>:<port>"
+	 * ou null si cette opération échoue.
+	 * @return l'URI du serveur
+     * @throws URISyntaxException 
+	 */
+    public URI site() throws URISyntaxException{
+    	if (this.getName()!=null){
+			return new URI("mobilagent://"+this.getName()+":"+Integer.toString(_port));
+    	} else {
+    		return null;
+    	}
     }
     
     /**
      * méthode toString
      */
     public String toString(){
-    	return this.toString();
+    	return toString();
     }
     
     /**

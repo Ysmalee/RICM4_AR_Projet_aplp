@@ -19,8 +19,8 @@ import java.util.logging.Logger;
 public final class Server {
 	/** le nom logique du serveur */
 	protected String name;
-	/** le port où sera ataché le service du bus à agent mobile. Pafr défaut on prendra le port 10140 */
-	protected int port=10140;
+	/** le port où sera ataché le service du bus à agent mobile. Par défaut on prendra le port 10140 */
+	protected int port=10142;
 	/** le server d'agent démarré sur ce noeud */
 	protected AgentServer agentServer;
 	/** le nom du logger */
@@ -33,7 +33,7 @@ public final class Server {
 	 * @param name le nom du serveur
 	 */
 	public Server(final int port, final String name){
-		System.err.println("Creation serveur");
+		System.out.println("Creation du serveur");
 		this.name=name;
 		try {
 			this.port=port;
@@ -42,8 +42,11 @@ public final class Server {
 			logger=Logger.getLogger(loggerName);
 			/* démarrage du server d'agents mobiles attaché à cette machine */
 			agentServer = new AgentServer(port);
+			System.out.println("Création du serveur d'agent");
 			/* temporisation de mise en place du server d'agents */
 			Thread.sleep(1000);
+			System.out.println("Lancement du serveur d'agent");
+			agentServer.run();
 		}catch(Exception ex){
 			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
 			return;
@@ -58,7 +61,14 @@ public final class Server {
 	 */
 	public final void addService(String name, String classeName, String codeBase, Object... args) {
 		try {
-			agentServer.addService(name, classeName, codeBase, args);
+			//Instanciation d'un service
+			BAMLoader serviceLoader = new BAMLoader();
+			serviceLoader.addURL(new URL(codeBase));
+        	Class<?> classe = (Class<?>)Class.forName(classeName,true,serviceLoader);
+        	_Service<?> service = (_Service<?>)classe.getConstructor(Object[].class).newInstance(args);
+			
+        	//Ajout du service
+        	agentServer.addService(name, service);
 		}catch(Exception ex){
 			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
 			return;
@@ -74,23 +84,24 @@ public final class Server {
 	 */
 	public final void deployAgent(String classeName, Object[] args, String codeBase, List<String> etapeAddress, List<String> etapeAction) {
 		try {
-        	
 			//Création de l'agent
 			BAMLoader agentLoader = new BAMLoader();
         	agentLoader.addURL(new URL(codeBase));
         	Class<?> classe = (Class<?>)Class.forName(classeName,true,agentLoader);
-        	Agent agentRunning = (Agent)classe.getConstructor(int.class,String.class).newInstance(args);
+        	Agent runningAgent = (Agent)classe.getConstructor(Object[].class).newInstance(args);
         	
         	//Instanciation de l'agent
-        	agentRunning.init(agentLoader, agentServer, name);
+        	runningAgent.init(agentLoader, agentServer, name);
         	
         	//Création de la route de l'agent
         	if (etapeAddress.size() == etapeAction.size()){
 	        	for (int i=0;i<etapeAddress.size();i++){
 	        		_Action a = (_Action) getClass().getDeclaredField(etapeAction.get(i)).get(null);
 	        		Etape e = new Etape(new URI(etapeAddress.get(i)),a);
-	        		agentRunning.addEtape(e);
+	        		runningAgent.addEtape(e);
 	        	}
+			System.out.println("Lancement de l'agent");
+	        runningAgent.run();
         	} else {
         		throw new Exception("Les tailles des listes d'étapes et d'actions sont différentes");
         	}
