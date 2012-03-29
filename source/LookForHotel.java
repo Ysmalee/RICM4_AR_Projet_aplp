@@ -1,3 +1,4 @@
+import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -49,9 +50,9 @@ public class LookForHotel{
 	/**
 	 * réalise une intérrogation
 	 * @return la durée de l'interrogation
-	 * @throws RemoteException
+	 * @throws Exception 
 	 */
-	public long call() throws RemoteException {
+	public long call() throws Exception {
 		String[] tabChaine = new String[4];
 		tabChaine[0] = "Hotel1";
 		tabChaine[1] = "Hotel2";
@@ -66,12 +67,17 @@ public class LookForHotel{
 			_Chaine c = null;
 			try {
 				c = (_Chaine) this._reg.lookup(tabChaine[i]);
-			} catch(NotBoundException e) {
-				System.err.println("Impossible d'obtenir la réference du serveur: " + tabChaine[i]);
+			} catch(Exception e) {
+				throw new Exception("erreur lors de la communication avec le RMI registry", e);
 			}
+
 			//Concataination
 			if(c != null) {
-				listeHotels.addAll(c.get(this._localisation));
+				try {
+					listeHotels.addAll(c.get(this._localisation));
+				} catch (RemoteException e) {
+					throw new Exception("erreur lors de la communication avec le serveur " + tabChaine[i], e);
+				}
 			}
 		}
 		System.out.println("Requête terminée: " + listeHotels.size() + " élements en " + 0 + "s");
@@ -82,5 +88,16 @@ public class LookForHotel{
 	
 	
 	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		LookForHotel obj = new LookForHotel("Paris", "localhost", 1099);
+		try {
+			obj.call();
+		} catch (Exception e) {
+			System.out.println("Impossible d'executer la requête\n" + e.toString());
+		}
+	}
 	
 }

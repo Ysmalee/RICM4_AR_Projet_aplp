@@ -11,24 +11,19 @@ import org.jdom.input.SAXBuilder;
 public class Parser_Hotel {
 	Document document;
 	List<?> liste;
-	Parser_Hotel(File fichier) {
-		 
-		  SAXBuilder builder = new SAXBuilder();
-		  Element rootNode = document.getRootElement();
-		  this.liste = rootNode.getChildren("Hotel");
-			 
-		  try {
-			this.document = (Document) builder.build(fichier);
-		} catch (JDOMException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
+	Parser_Hotel(File fichier) throws JDOMException, IOException {
+		SAXBuilder builder = new SAXBuilder();
+		this.document = (Document) builder.build(fichier);
+		Element rootNode = document.getRootElement();
+		this.liste = rootNode.getChildren("Hotel");
+
+	}
+
 	List<Hotel> get_hotels_from_xml(String ville){
 		List<Hotel> rez = new ArrayList<Hotel>();
 		for (int i = 0; i < liste.size(); i++) {
-			
+
 			Element node = (Element) liste.get(i);
 			String endroit = node.getAttributeValue("localisation");
 			if(endroit.equals(ville)){
@@ -36,6 +31,6 @@ public class Parser_Hotel {
 				rez.add(undeplus);
 			}
 		}
-	return rez;
+		return rez;
 	}	
 }

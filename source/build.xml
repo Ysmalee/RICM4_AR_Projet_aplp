@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Mobil-Agent-Objectif1" basedir=".">
-	
 	<!-- Création des dossiers -->
 	<target name="init">
 		<mkdir dir="build" />
@@ -20,14 +19,15 @@
 	<target name="chaine" depends="compile">
 		<jar destfile="dist/Chaine.jar" basedir="build">
 			<manifest>
-				<attribute name="Main-Class" value="Chaine"/>
-			</manifest>		
+                <attribute name="Main-Class" value="Chaine"/>
+                <attribute name="ClassPath" value="./*"/>
+            </manifest>	
 		</jar>
 	</target>
 
 	<!-- Création du jar Annuaire -->
 	<target name="annuaire" depends="compile">
-		<jar destfile="Annuaire.jar" basedir="build">
+        <jar destfile="dist/Annuaire.jar" basedir="build">
 			<manifest>
 				<attribute name="Main-Class" value="Annuaire"/>
 			</manifest>		
@@ -36,7 +36,7 @@
 	
 	<!-- Création du jar LookForHotel -->
 	<target name="lookforhotel" depends="compile">
-		<jar destfile="LookForHotel.jar" basedir="build">
+        <jar destfile="dist/LookForHotel.jar" basedir="build">
 			<manifest>
 				<attribute name="Main-Class" value="LookForHotel"/>
 			</manifest>		
@@ -45,14 +45,14 @@
 
 	<!-- Création du jar RegistryServer -->
 	<target name="registryserver" depends="compile">
-		<jar destfile="RegistryServer.jar" basedir="build">
+        <jar destfile="dist/RegistryServer.jar" basedir="build">
 			<manifest>
 				<attribute name="Main-Class" value="RegistryServer"/>
 			</manifest>		
 		</jar>
 	</target>
 
-	<!-- Clean -->		
+    <!-- Clean -->		
 	<target name="clean" description="Fait le menage">
         	<delete dir="build" />
         	<delete dir="dist" />

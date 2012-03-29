@@ -26,7 +26,7 @@ public class Chaine extends UnicastRemoteObject implements _Chaine {
 	public Chaine(String name, String dataFile) throws Exception, RemoteException {
 		this._data = new File(dataFile);
 		if( ! this._data.exists()) {
-			throw new Exception("Data file does not exist");
+			throw new Exception("Data file does not exist : \n" + dataFile);
 		}
 		this._name = name;
 		this._parser = new Parser_Hotel(_data);
@@ -38,8 +38,9 @@ public class Chaine extends UnicastRemoteObject implements _Chaine {
 	/**
 	 * Retourne la liste des hotels de la chaine correspondant �� la localisation
 	 */
-	public List<Hotel> get(String localisation) throws RemoteException {
-		List<Hotel> listRes = _parser.get_hotels_from_xml(localisation);
+	public ArrayList<Hotel> get(String localisation) throws RemoteException {
+		System.out.println("Req: " + localisation);
+		ArrayList<Hotel> listRes = new ArrayList<Hotel>(_parser.get_hotels_from_xml(localisation));
 		return listRes;
 	}
 	
@@ -77,37 +78,53 @@ public class Chaine extends UnicastRemoteObject implements _Chaine {
 		}
 
 		
+		
 		//Cr��ation/Connexion de l'objet registry
+		System.out.print("Connexion au registry");
 		try {
 			//reg = LocateRegistry.createRegistry(port);
 			reg = LocateRegistry.getRegistry(host, port);
 		} catch (RemoteException e) {
+			System.out.println("Erreur");
 			System.out.println("Echec de la connexion au RMI\n" + e.toString());
 			System.exit(1);
 		}
+		System.out.println("OK");
+		
+		
 		
 		//Creation de l'objet distant
+		System.out.print("Création de l'objet chaine [" + name + "]" + " ... ");
 		_Chaine c = null;
 		try {
 			c = new Chaine(name, dataFile);
 		} catch (RemoteException e) {
+			System.out.println("Erreur");
 			System.out.println("[Creation de la Chaine] Remote exception:" + e.toString());
 			System.exit(1);
 		} catch (Exception e) {
+			System.out.println("Erreur");
 			System.out.println("[Creation de la Chaine] Exception:" + e.toString());
 			System.exit(1);
 		}
+		System.out.println("OK");
+		
+		
 		
 		//Enregistrement de l'objet
+		System.out.print("Enregistrement de l'objet dans le registry ... ");
 		try {
 			reg.rebind(name, c);
 		} catch (AccessException e) {
+			System.out.println("Erreur");
 			System.out.println("[Enregistrement de la Chaine] Remote exception:" + e.toString());
 			System.exit(1);
 		} catch (RemoteException e) {
+			System.out.println("Erreur");
 			System.out.println("[Enregistrement de la Chaine] Exception:" + e.toString());
 			System.exit(1);
 		}
+		System.out.println("OK");
 	}
 	
 

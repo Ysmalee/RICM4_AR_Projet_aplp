@@ -25,13 +25,16 @@ public class RegistryServer {
 		}
 		
 		//Creation du RMI-Registry
+		System.out.print("Lancement du serveur ... ");
 		try {
 			Registry reg = LocateRegistry.createRegistry(port);
 		} catch (RemoteException e) {
+			System.out.println("Erreur");
 			System.out.println("Erreur lors de la creation du registry\n" + e.toString());
 			System.exit(1);
 		}
 		
+		System.out.println("OK");
 		while(true) {
 			
 		}

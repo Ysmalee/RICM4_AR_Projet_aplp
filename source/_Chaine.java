@@ -4,7 +4,7 @@
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Définit une chaine d'hôtels et une fonctionnalité permettant d'obtenir l'ensemble des hotels de cette chaine
@@ -18,6 +18,6 @@ public interface _Chaine extends Remote {
 	 * @param localisation le lieu où l'on recherche des hotels
 	 * @return la liste des hotels trouvés
 	 */
-	public abstract List<Hotel> get(String localisation) throws RemoteException;
+	public abstract ArrayList<Hotel> get(String localisation) throws RemoteException;
 	
 }
