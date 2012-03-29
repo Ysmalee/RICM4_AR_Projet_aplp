@@ -68,7 +68,8 @@ public class Starter{
 			// ajout des services
 			addServices();
 			// ajout des agents
-			deployAgents();
+			deployAgents();		
+
 		}catch(Exception ex){
 			logger.log(Level.FINE,"Ce programme nécessite un argument : <conf file> <name server>",ex);
 			ex.printStackTrace();
@@ -77,7 +78,7 @@ public class Starter{
 	}
 	public void createServer(int port, String name) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		loader = new BAMLoader();
-		loader.addURL(new URL("file:///home/tim/RICM4_AR_Projet_aplp/Src/jus/aor/mobilagent/jar/MobilAgent.jar"));
+		loader.addURL("/home/tim/RICM4_AR_Projet_aplp/Src/jus/aor/mobilagent/jar/MobilAgent.jar");
 		classe = (Class<?>)Class.forName("jus.aor.mobilagent.kernel.Server",true,loader);
 		server = classe.getConstructor(int.class,String.class).newInstance(port,name);
 	}
@@ -150,8 +151,9 @@ public class Starter{
 		try{
 			method = classe.getDeclaredMethod("deployAgent",String.class,Object[].class, String.class,List.class,List.class);
 			method.setAccessible(true);
-			method.invoke(server, classeName, args, codeBase,serverAddress, serverAction);
+			method.invoke(server, classeName, args, codeBase, serverAddress, serverAction);
 		}catch(Exception e){
+			System.out.println("");
 			logger.log(Level.FINE," erreur durant le lancement du serveur",e);
 		}
 	}

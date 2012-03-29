@@ -3,6 +3,7 @@
  */
 package jus.aor.mobilagent.kernel;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.URI;
@@ -41,12 +42,12 @@ public final class Server {
 			loggerName = "jus/aor/mobilagent/"+InetAddress.getLocalHost().getHostName()+"/"+this.name;
 			logger=Logger.getLogger(loggerName);
 			/* démarrage du server d'agents mobiles attaché à cette machine */
-			agentServer = new AgentServer(port);
 			System.out.println("Création du serveur d'agent");
+			agentServer = new AgentServer(port);
 			/* temporisation de mise en place du server d'agents */
 			Thread.sleep(1000);
 			System.out.println("Lancement du serveur d'agent");
-			agentServer.run();
+			agentServer.start();
 		}catch(Exception ex){
 			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
 			return;
@@ -63,7 +64,7 @@ public final class Server {
 		try {
 			//Instanciation d'un service
 			BAMLoader serviceLoader = new BAMLoader();
-			serviceLoader.addURL(new URL(codeBase));
+			serviceLoader.addURL(codeBase);
         	Class<?> classe = (Class<?>)Class.forName(classeName,true,serviceLoader);
         	_Service<?> service = (_Service<?>)classe.getConstructor(Object[].class).newInstance(args);
 			
@@ -85,26 +86,31 @@ public final class Server {
 	public final void deployAgent(String classeName, Object[] args, String codeBase, List<String> etapeAddress, List<String> etapeAction) {
 		try {
 			//Création de l'agent
-			BAMLoader agentLoader = new BAMLoader();
-        	agentLoader.addURL(new URL(codeBase));
+			BAMLoader agentLoader = new BAMLoader(new URL[]{}, getClass().getClassLoader());
+        	agentLoader.addURL(codeBase);
         	Class<?> classe = (Class<?>)Class.forName(classeName,true,agentLoader);
-        	Agent runningAgent = (Agent)classe.getConstructor(Object[].class).newInstance(args);
+        	Constructor<?> c = classe.getConstructor(Object[].class);
+        	Agent runningAgent = (Agent)c.newInstance(new Object[]{args});
         	
         	//Instanciation de l'agent
-        	runningAgent.init(agentLoader, agentServer, name);
-        	
+        	runningAgent.init(agentServer, name);
+			
         	//Création de la route de l'agent
         	if (etapeAddress.size() == etapeAction.size()){
 	        	for (int i=0;i<etapeAddress.size();i++){
-	        		_Action a = (_Action) getClass().getDeclaredField(etapeAction.get(i)).get(null);
+	        		Field f = runningAgent.getClass().getDeclaredField(etapeAction.get(i));
+	        		f.setAccessible(true);
+	        		_Action a = (_Action) f.get(runningAgent);
 	        		Etape e = new Etape(new URI(etapeAddress.get(i)),a);
 	        		runningAgent.addEtape(e);
 	        	}
-			System.out.println("Lancement de l'agent");
-	        runningAgent.run();
         	} else {
         		throw new Exception("Les tailles des listes d'étapes et d'actions sont différentes");
         	}
+        	
+        	//Déploiement de l'agent
+        	System.out.println("Lancement de l'agent");
+        	runningAgent.sendAgent();
         	
    		}catch(Exception ex){
 			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);

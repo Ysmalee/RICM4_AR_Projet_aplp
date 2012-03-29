@@ -73,6 +73,11 @@ public class AgentServer extends Thread{
 				//Récupération de l'agent
 				AgentInputStream ais = new AgentInputStream(agentSocket.getInputStream(), agentLoader);
 				_Agent agentRecu = (_Agent) ais.readObject();
+				
+				//Lancement de l'agent
+				Thread temp = new Thread(agentRecu);
+				temp.start();
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

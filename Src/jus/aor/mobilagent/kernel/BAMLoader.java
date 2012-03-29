@@ -26,11 +26,11 @@ public class BAMLoader extends URLClassLoader {
 	/**
 	 * Ajoute un repository au BAMLoader
 	 */
-	protected void addURL(URL url){
-		super.addURL(url);
+	protected void addURL(String jar){
+//		super.addURL(url);
 		try {
-			Jar jar = new Jar(url.getFile());
-			this.integrateCode(jar);
+			ressources = new Jar(jar);
+			this.integrateCode(ressources);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

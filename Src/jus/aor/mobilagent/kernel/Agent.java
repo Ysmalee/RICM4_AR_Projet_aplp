@@ -14,11 +14,8 @@ import java.util.List;
 
 public class Agent extends Thread implements _Agent{
     
-	private BAMLoader agentLoader;
-    private AgentServer server;
+    private transient AgentServer server;
     private Route route;
-    protected Class<?> classe;
-	private Socket agentSocket;
     
   
     /**
@@ -30,6 +27,11 @@ public class Agent extends Thread implements _Agent{
     public void init(AgentServer agentServer, String serverName){
     	this.server=agentServer;
         this.server.setName(serverName);
+		try {
+			route = new Route(new Etape(new URI(serverName), _Action.NIHIL));
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
     }
 
     /**
@@ -40,14 +42,7 @@ public class Agent extends Thread implements _Agent{
      */
     @Override
     public void init(BAMLoader loader, AgentServer server, String serverName){
-        try {
-            this.init(server, serverName);
-			route = new Route(new Etape(new URI(serverName), _Action.NIHIL));
-	        agentLoader=loader;
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}   
+            this.init(server, serverName);  
     }
     
     /**
@@ -66,14 +61,13 @@ public class Agent extends Thread implements _Agent{
     public void run() {
     	//L'agent exécute son action courante
     	if (route.hasNext){
-    		route.next().action.execute();
-    		//Envoi de l'agent
-    		sendAgent();
+    		route.get().action.execute();
+    		route.next();
     	} else {
     		route.retour.action.execute();
-        	//Envoi de l'agent
-    		sendAgent();
     	}
+    	//Envoi de l'agent
+		sendAgent();
     }
    
     /**
@@ -81,10 +75,22 @@ public class Agent extends Thread implements _Agent{
      */
     public void sendAgent(){
     	try{
-    		agentSocket = new Socket(route.get().server.toString(), route.get().server.getPort());
-			ObjectOutputStream ous = new ObjectOutputStream(agentSocket.getOutputStream());
+    		System.out.println("Debut du sendAgent()");
+    		//Création de la socket
+    		Socket agentSocket = new Socket(route.get().server.getHost(), route.get().server.getPort());
+    		
+    		//Envoi du jar de l'agent
+    		Jar jar = ((BAMLoader) getClass().getClassLoader()).extractCode();
+    		ObjectOutputStream ous = new ObjectOutputStream(agentSocket.getOutputStream());
+    		ous.writeObject(jar);
+    		
+    		//Envoi de l'agent
 			ous.writeObject(this);
+			
+			//Fermeture de la socket
 			agentSocket.close();
+			
+			System.out.println("Fin du sendAgent()");
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
