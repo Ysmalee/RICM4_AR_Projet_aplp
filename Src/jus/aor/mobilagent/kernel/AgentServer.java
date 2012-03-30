@@ -2,13 +2,10 @@ package jus.aor.mobilagent.kernel;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.rmi.server.SocketSecurityException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,14 +63,22 @@ public class AgentServer extends Thread{
 				agentSocket = ss.accept();
 				
 				//Récupération du jar de l'agent
+				System.err.println("Récupération du jar de l'agent...");
 				Jar jar = (Jar)(new ObjectInputStream(agentSocket.getInputStream())).readObject();
 				BAMLoader agentLoader = new BAMLoader();
 				agentLoader.integrateCode(jar);
+				System.err.println("Jar récupéré...");
 				
 				//Récupération de l'agent
+				System.err.println("Récupération de l'agent...");
 				AgentInputStream ais = new AgentInputStream(agentSocket.getInputStream(), agentLoader);
-				_Agent agentRecu = (_Agent) ais.readObject();
+				Agent agentRecu = (Agent) ais.readObject();
+				System.err.println("Agent récupéré...");
 				
+		    	//L'agent exécute son action courante
+		   		agentRecu.getRoute().get().action.execute();
+		   		agentRecu.getRoute().next();
+		   		
 				//Lancement de l'agent
 				Thread temp = new Thread(agentRecu);
 				temp.start();

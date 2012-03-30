@@ -16,7 +16,7 @@ public class BAMLoader extends URLClassLoader {
 	 * Constructeurs 	
 	 */
 	public BAMLoader(){
-		super(new URL[]{});
+		super(new URL[]{},null);
 	}
 	
 	public BAMLoader(URL[] urls, ClassLoader parent){
@@ -25,16 +25,16 @@ public class BAMLoader extends URLClassLoader {
 	
 	/**
 	 * Ajoute un repository au BAMLoader
+	 * @throws IOException 
+	 * @throws JarException 
 	 */
-	protected void addURL(String jar){
-//		super.addURL(url);
+	protected void addURL(String jar) throws IOException{
 		try {
 			ressources = new Jar(jar);
-			this.integrateCode(ressources);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new IOException("Erreur lors de l'ajout du JAR", e);
 		}
+		this.integrateCode(ressources);
 	}
 	
 	/**
@@ -50,15 +50,11 @@ public class BAMLoader extends URLClassLoader {
 	 * Si ClassNotFoundException, vérifie si la classe est dans le cache
 	 */
 	public Class<?> findClass(String name) throws ClassNotFoundException {
-		try {
-			return super.findClass(ressources.formatClassName(name));
-		} catch (ClassNotFoundException e) {
-			byte[] classe = cache.get(ressources.formatClassName(name));
-			if(classe==null){
-				throw new ClassNotFoundException ("class "+classe+" not found.");
-			}
-			return this.defineClass(name,classe, 0, classe.length);
+		byte[] classe = cache.get(Jar.formatClassName(name));
+		if(classe==null){
+			throw new ClassNotFoundException ("class "+name+" not found.");
 		}
+		return this.defineClass(name,classe, 0, classe.length);
 	}
 	
 	/**
@@ -71,5 +67,14 @@ public class BAMLoader extends URLClassLoader {
 			byte[] classe = e.getValue();
 			cache.put(name,classe);			
 		}
+	}
+	
+	public String toString(){
+		String buff = "";
+		for(String e : cache.keySet()){
+			buff += e + "\n";
+		}
+			
+		return buff;
 	}
 }

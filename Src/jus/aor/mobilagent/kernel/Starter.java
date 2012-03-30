@@ -4,6 +4,7 @@
 package jus.aor.mobilagent.kernel;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
@@ -76,7 +77,7 @@ public class Starter{
 			return;
 		}
 	}
-	public void createServer(int port, String name) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	public void createServer(int port, String name) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
 		loader = new BAMLoader();
 		loader.addURL("/home/tim/RICM4_AR_Projet_aplp/Src/jus/aor/mobilagent/jar/MobilAgent.jar");
 		classe = (Class<?>)Class.forName("jus.aor.mobilagent.kernel.Server",true,loader);
@@ -153,7 +154,6 @@ public class Starter{
 			method.setAccessible(true);
 			method.invoke(server, classeName, args, codeBase, serverAddress, serverAction);
 		}catch(Exception e){
-			System.out.println("");
 			logger.log(Level.FINE," erreur durant le lancement du serveur",e);
 		}
 	}

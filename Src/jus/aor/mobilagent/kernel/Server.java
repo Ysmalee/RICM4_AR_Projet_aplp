@@ -30,7 +30,7 @@ public final class Server {
 	protected Logger logger=null;
 	/**
 	 * Démarre un serveur de type mobilagent 
-	 * @param port le port d'écuote du serveur d'agent 
+	 * @param port le port d'écoute du serveur d'agent 
 	 * @param name le nom du serveur
 	 */
 	public Server(final int port, final String name){
@@ -86,8 +86,9 @@ public final class Server {
 	public final void deployAgent(String classeName, Object[] args, String codeBase, List<String> etapeAddress, List<String> etapeAction) {
 		try {
 			//Création de l'agent
-			BAMLoader agentLoader = new BAMLoader(new URL[]{}, getClass().getClassLoader());
+			BAMLoader agentLoader = new BAMLoader(new URL[]{},this.getClass().getClassLoader());
         	agentLoader.addURL(codeBase);
+        	System.out.println(agentLoader.toString());
         	Class<?> classe = (Class<?>)Class.forName(classeName,true,agentLoader);
         	Constructor<?> c = classe.getConstructor(Object[].class);
         	Agent runningAgent = (Agent)c.newInstance(new Object[]{args});
@@ -110,7 +111,7 @@ public final class Server {
         	
         	//Déploiement de l'agent
         	System.out.println("Lancement de l'agent");
-        	runningAgent.sendAgent();
+        	runningAgent.start();
         	
    		}catch(Exception ex){
 			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);

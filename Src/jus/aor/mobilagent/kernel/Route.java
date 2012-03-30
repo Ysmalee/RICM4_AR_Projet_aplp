@@ -43,7 +43,7 @@ class Route implements Iterable<Etape>, Serializable{
 	 * @return la prochaine étape.
 	 */
 	Etape get() throws NoSuchElementException {
-		if (hasNext){
+		if (route.size()>0){
 			return route.get(0);
 		} else {
 			return retour;

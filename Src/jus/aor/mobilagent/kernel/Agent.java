@@ -1,16 +1,9 @@
 package jus.aor.mobilagent.kernel;
 
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.List;
 
 public class Agent extends Thread implements _Agent{
     
@@ -59,28 +52,14 @@ public class Agent extends Thread implements _Agent{
      */
     @Override
     public void run() {
-    	//L'agent exécute son action courante
-    	if (route.hasNext){
-    		route.get().action.execute();
-    		route.next();
-    	} else {
-    		route.retour.action.execute();
-    	}
     	//Envoi de l'agent
-		sendAgent();
-    }
-   
-    /**
-     * Envoi de l'agent sur le prochain serveur
-     */
-    public void sendAgent(){
     	try{
-    		System.out.println("Debut du sendAgent()");
+    		System.out.println("Debut de l'envoi de l'agent...");
     		//Création de la socket
     		Socket agentSocket = new Socket(route.get().server.getHost(), route.get().server.getPort());
     		
     		//Envoi du jar de l'agent
-    		Jar jar = ((BAMLoader) getClass().getClassLoader()).extractCode();
+    		Jar jar = ((BAMLoader)getClass().getClassLoader()).extractCode();
     		ObjectOutputStream ous = new ObjectOutputStream(agentSocket.getOutputStream());
     		ous.writeObject(jar);
     		
@@ -90,10 +69,17 @@ public class Agent extends Thread implements _Agent{
 			//Fermeture de la socket
 			agentSocket.close();
 			
-			System.out.println("Fin du sendAgent()");
+			System.out.println("Fin de l'envoi...");
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
-    }
+    } 
     
+    /**
+     * Getter de la route de l'agent
+     * @return route
+     */
+    public Route getRoute(){
+    	return route;
+    }
 }
