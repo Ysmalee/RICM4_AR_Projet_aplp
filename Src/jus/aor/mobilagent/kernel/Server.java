@@ -43,7 +43,7 @@ public final class Server {
 			logger=Logger.getLogger(loggerName);
 			/* démarrage du server d'agents mobiles attaché à cette machine */
 			System.out.println("Création du serveur d'agent");
-			agentServer = new AgentServer(port);
+			agentServer = new AgentServer(port, name);
 			/* temporisation de mise en place du server d'agents */
 			Thread.sleep(1000);
 			System.out.println("Lancement du serveur d'agent");

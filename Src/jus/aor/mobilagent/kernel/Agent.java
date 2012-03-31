@@ -7,9 +7,9 @@ import java.net.URISyntaxException;
 
 public class Agent extends Thread implements _Agent{
     
-    private transient AgentServer server;
+	private static final long serialVersionUID = 1L;
+	private transient AgentServer server;
     private Route route;
-    
   
     /**
      * Initialisation de l'AgentServer
@@ -41,7 +41,7 @@ public class Agent extends Thread implements _Agent{
     /**
      * Ajout d'une étape à la route
      * @param etape nouvelle etape à ajouter à la route
-     */
+     */    
     @Override
     public void addEtape(Etape etape){
         route.add(etape);
@@ -66,7 +66,8 @@ public class Agent extends Thread implements _Agent{
     		//Envoi de l'agent
 			ous.writeObject(this);
 			
-			//Fermeture de la socket
+			//Fermeture des objets
+			ous.close();
 			agentSocket.close();
 			
 			System.out.println("Fin de l'envoi...");
