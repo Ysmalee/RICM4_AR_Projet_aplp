@@ -19,7 +19,7 @@ class Route implements Iterable<Etape>, Serializable{
 	protected List<Etape> route;
 	/** la dernière étape de la feuille de route de l'agent qui désigne le serveur de départ. */
 	protected Etape retour;
-	/** Indique si la feuille de route est épuisée ou non. */
+	/** permet de savoir s'il y a une étape suivante dans la route*/
 	protected boolean hasNext;
 	
 	/**
@@ -29,7 +29,7 @@ class Route implements Iterable<Etape>, Serializable{
 	public Route(Etape retour) {
 		route = new LinkedList<Etape>();
 		this.retour = retour;
-		hasNext=true;
+		hasNext = true;
 	}
 	
 	/**
@@ -43,7 +43,7 @@ class Route implements Iterable<Etape>, Serializable{
 	 * @return la prochaine étape.
 	 */
 	Etape get() throws NoSuchElementException {
-		if (route.size()>0){
+		if (hasNext()){
 			return route.get(0);
 		} else {
 			return retour;
@@ -55,7 +55,7 @@ class Route implements Iterable<Etape>, Serializable{
 	 * @return la prochaine étape.
 	 */
 	Etape next() throws NoSuchElementException {
-		if (hasNext){
+		if (hasNext()){
 			Etape nextEtape = this.get();
 			route.remove(0); //supprime l'étape à venir
 			if (route.size()==0){

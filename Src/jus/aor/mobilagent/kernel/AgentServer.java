@@ -73,17 +73,15 @@ public class AgentServer extends Thread{
 				Agent agentRecu = ais.readAgent();
 				System.err.println("Agent récupéré...");
 				
-		   		//Fermeture de l'AgentInputStream
-		   		ais.close();
-				
 		    	//L'agent exécute son action courante
 		   		agentRecu.getRoute().get().action.execute();
-		   		agentRecu.getRoute().next();
-				System.out.println("Agent " + agentRecu.getName() + " is running.");
 		   		
 				//Lancement de l'agent
 				Thread temp = new Thread(agentRecu);
-				temp.start();	
+				temp.start();
+				
+		   		//Fermeture de l'AgentInputStream
+		   		ais.close();
 			}	
     	}catch (IOException e) {
 			e.printStackTrace();
@@ -105,13 +103,10 @@ public class AgentServer extends Thread{
 	 * ou null si cette opération échoue.
 	 * @return l'URI du serveur
      * @throws URISyntaxException 
+     * @throws UnknownHostException 
 	 */
-    public URI site() throws URISyntaxException{
-    	if (this.getName()!=null){
-			return new URI("mobilagent://"+this.getName()+":"+Integer.toString(_port));
-    	} else {
-    		return null;
-    	}
+    public URI site() throws UnknownHostException, URISyntaxException{
+		return new URI("mobilagent://"+InetAddress.getLocalHost().getHostName()+":"+Integer.toString(_port));
     }
     
     /**
@@ -129,6 +124,13 @@ public class AgentServer extends Thread{
     	return _port;
     }
     
+    /**
+     * Getter du nom du serveur
+     * @return nom du serveur
+     */
+    public String getNameServer(){
+    	return this.nameServer;
+    }
     
 }
 

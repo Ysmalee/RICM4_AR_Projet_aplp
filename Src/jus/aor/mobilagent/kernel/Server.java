@@ -109,6 +109,9 @@ public final class Server {
         		throw new Exception("Les tailles des listes d'étapes et d'actions sont différentes");
         	}
         	
+        	//Etape retour de l'agent
+        	runningAgent.getRoute().retour = new Etape(agentServer.site(),_Action.NIHIL);
+        	
         	//Déploiement de l'agent
         	System.out.println("Lancement de l'agent");
         	runningAgent.start();
