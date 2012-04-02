@@ -68,10 +68,18 @@ class Route implements Iterable<Etape>, Serializable{
 	}
 	
 	/**
-	 * Il y a-t-il encore une étape à parcourir.
+	 * Y a-t-il encore une étape à parcourir?
 	 * @return vrai si une étape est possible.
 	 */
 	public boolean hasNext() {return hasNext;}
+	
+	/**
+	 * La route est-elle vide ?
+	 * @return vrai si la route est vide
+	 */
+	public boolean isFinished(){
+		return (route.size()==0);
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Iterable#iterator()

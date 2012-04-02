@@ -16,7 +16,7 @@ public interface _Action extends Serializable{
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public void execute() {}
+		public void execute() {System.out.println("coucou");}
 	}; 
 	
 	/**

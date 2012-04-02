@@ -23,12 +23,11 @@ public class AgentServer extends Thread{
 	/** Socket de l'agent */
 	private Socket agentSocket;
 	
-	
-	
 	/**Jar contenant les services */
 	Jar services;
 	/** Map contenant les différents sesrvices offerts par le serveur */
 	Map<String,_Service<?>> _services = new HashMap<String,_Service<?>>();
+	
 	
 	/**Constructeur*/
     public AgentServer(int port, String name){
@@ -73,15 +72,20 @@ public class AgentServer extends Thread{
 				Agent agentRecu = ais.readAgent();
 				System.err.println("Agent récupéré...");
 				
-		    	//L'agent exécute son action courante
-		   		agentRecu.getRoute().get().action.execute();
-		   		
-				//Lancement de l'agent
-				Thread temp = new Thread(agentRecu);
-				temp.start();
-				
 		   		//Fermeture de l'AgentInputStream
 		   		ais.close();
+				
+		    	//L'agent exécute son action courante
+				if (agentRecu.getRoute().isFinished()){
+					System.out.println("Exécution de l'agent terminée !!!");
+				} else {
+					agentRecu.getRoute().get().action.execute();
+			   		agentRecu.getRoute().next();
+			   		
+					//Lancement de l'agent
+					Thread temp = new Thread(agentRecu);
+					temp.start();
+				}
 			}	
     	}catch (IOException e) {
 			e.printStackTrace();

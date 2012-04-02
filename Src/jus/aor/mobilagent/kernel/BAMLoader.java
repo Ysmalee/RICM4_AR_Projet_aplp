@@ -62,6 +62,7 @@ public class BAMLoader extends URLClassLoader {
 	 * @param jar
 	 */
 	public void integrateCode(Jar jar){
+		ressources = jar;
 		for(Map.Entry<String,byte[]> e : jar.classIterator()){
 			String name = e.getKey();
 			byte[] classe = e.getValue();

@@ -70,6 +70,7 @@ public final class Server {
 			
         	//Ajout du service
         	agentServer.addService(name, service);
+        	
 		}catch(Exception ex){
 			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
 			return;

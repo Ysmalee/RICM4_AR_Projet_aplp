@@ -21,7 +21,9 @@ public class Agent extends Thread implements _Agent{
     	this.server=agentServer;
         this.server.setName(serverName);
 		try {
-			route = new Route(new Etape(new URI(serverName), _Action.NIHIL));
+			if (route==null){
+				route = new Route(new Etape(new URI(serverName), _Action.NIHIL));
+			}
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
@@ -35,7 +37,7 @@ public class Agent extends Thread implements _Agent{
      */
     @Override
     public void init(BAMLoader loader, AgentServer server, String serverName){
-            this.init(server, serverName);  
+        this.init(server, serverName);  
     }
     
     /**
