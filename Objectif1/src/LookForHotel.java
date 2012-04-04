@@ -1,11 +1,11 @@
-import java.rmi.AccessException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.security.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javax.xml.crypto.Data;
 
 /**
  * J<i>ava</i> U<i>tilities</i> for S<i>tudents</i>
@@ -62,6 +62,7 @@ public class LookForHotel{
 		List<Hotel> listeHotels = new ArrayList<Hotel>();
 
 		System.out.println("Début de la requête: " + this._localisation);
+		Date debut = new Date();
 		for(int i=0; i<4; i++) {
 			//Récupère l'objet
 			_Chaine c = null;
@@ -80,7 +81,8 @@ public class LookForHotel{
 				}
 			}
 		}
-		System.out.println("Requête terminée: " + listeHotels.size() + " élements en " + 0 + "s");
+		Date fin = new Date();
+		System.out.println("Requête terminée: " + listeHotels.size() + " élements en " + (fin.getTime() - debut.getTime()) + "ms");
 		
 		return 0;
 	}
