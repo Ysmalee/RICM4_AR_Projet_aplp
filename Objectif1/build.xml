@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Mobil-Agent-Objectif1" basedir=".">
+	<property name="Objectif1.link" value="./src"/>
+	<property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+
+
+	<!-- Classpath -->
+	<path id="build.classpath">
+        <pathelement location="../lib/jdom-1.1.3.jar"/>
+    </path>
+    <path id="execute.classpath">
+        <pathelement location="../lib/jdom-1.1.3.jar"/>
+    </path>
+
+	<!-- Création des dossiers -->
+	<target name="init">
+		<mkdir dir="build" />
+		<mkdir dir="jar" />
+	</target>
+	
+	
+	<!-- Build -->  
+	<target depends="init" name="build">
+		    <echo message="${ant.project.name}: ${ant.file}"/>
+		    <javac debug="true" destdir="build" source="${source}" includeantruntime="false" target="${target}">
+		        <src path="${Objectif1.link}"/>
+		        <classpath refid="build.classpath"/>
+		    </javac>
+	</target>
+
+	
+	<!-- Création du jar Chaine -->
+	<target name="chaine.jar" depends="build">
+		<jar destfile="jar/chaine.jar" basedir="build">
+			<manifest>
+                <attribute name="Main-Class" value="Chaine"/>
+                <attribute name="ClassPath" value="./*"/>
+            </manifest>	
+		</jar>
+	</target>
+
+	<!-- Création du jar Annuaire -->
+	<target name="annuaire.jar" depends="build">
+        <jar destfile="jar/annuaire.jar" basedir="build">
+			<manifest>
+				<attribute name="Main-Class" value="Annuaire"/>
+			</manifest>		
+		</jar>
+	</target>
+	
+	
+	<!-- Création du jar LookForHotel -->
+	<target name="lookforhotel.jar" depends="build">
+        <jar destfile="jar/lookforhotel.jar" basedir="build">
+			<manifest>
+				<attribute name="Main-Class" value="LookForHotel"/>
+			</manifest>		
+		</jar>
+	</target>
+
+	<!-- Création du jar RegistryServer -->
+	<target name="registryserver.jar" depends="build">
+        <jar destfile="jar/registryserver.jar" basedir="build">
+			<manifest>
+				<attribute name="Main-Class" value="RegistryServer"/>
+			</manifest>		
+		</jar>
+	</target>
+
+    <!-- Clean -->		
+	<target name="clean" description="Fait le menage">
+        	<delete dir="build" />
+	</target>
+
+	<!-- ALL -->
+	<target name="all" depends="init,build,chaine.jar,annuaire.jar,lookforhotel.jar,registryserver.jar"/>
+
+
+	<!-- Exécution du jar Server  -->
+	<target name="registryserver" depends="registryserver.jar">
+    		<java jar="jar/registryserver.jar" fork="true">
+			<arg line="1099"/>
+            <classpath refid="execute.classpath"/>		
+    		</java>
+  	</target>
+  	
+  	
+  	<!-- Exécution du jar lookForHotel  -->
+	<target name="lookforhotel" depends="lookforhotel.jar">
+    		<java jar="jar/lookforhotel.jar" fork="true">
+            <classpath refid="execute.classpath"/>		
+    		</java>
+  	</target>
+
+
+	<!-- Exécution du jar annuaire  -->
+	<target name="annuaire" depends="annuaire.jar">
+    		<java jar="jar/annuaire.jar" fork="true">
+			<arg line="&quot;../DataStore/Annuaire.xml&quot; 127.0.0.1 1099"/>
+            <classpath refid="execute.classpath"/>		
+    		</java>
+  	</target>
+  	
+  	<!-- Exécution du jar chaine[1]  -->
+	<target name="chaine1" depends="chaine.jar">
+    		<java jar="jar/chaine.jar" fork="true">
+			<arg line="&quot;Hotel1&quot; &quot;../DataStore/Hotels1.xml&quot; 127.0.0.1 1099"/>
+            <classpath refid="execute.classpath"/>		
+    		</java>
+  	</target>
+  	
+  	<!-- Exécution du jar chaine[2]  -->
+	<target name="chaine2" depends="chaine.jar">
+    		<java jar="jar/chaine.jar" fork="true">
+			<arg line="&quot;Hotel2&quot; &quot;../DataStore/Hotels2.xml&quot; 127.0.0.1 1099"/>
+            <classpath refid="execute.classpath"/>		
+    		</java>
+  	</target>
+  	
+  	<!-- Exécution du jar chaine[3]  -->
+	<target name="chaine3" depends="chaine.jar">
+    		<java jar="jar/chaine.jar" fork="true">
+			<arg line="&quot;Hotel3&quot; &quot;../DataStore/Hotels3.xml&quot; 127.0.0.1 1099"/>
+            <classpath refid="execute.classpath"/>		
+    		</java>
+  	</target>
+  	
+  	<!-- Exécution du jar chaine[4]  -->
+	<target name="chaine4" depends="chaine.jar">
+    		<java jar="jar/chaine.jar" fork="true">
+			<arg line="&quot;Hotel4&quot; &quot;../DataStore/Hotels4.xml&quot; 127.0.0.1 1099"/>
+            <classpath refid="execute.classpath"/>		
+    		</java>
+  	</target>
+
+
+
+
+</project>
