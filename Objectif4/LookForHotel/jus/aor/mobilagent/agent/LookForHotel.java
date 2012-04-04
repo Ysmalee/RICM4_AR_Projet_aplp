@@ -3,11 +3,13 @@ package jus.aor.mobilagent.agent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import jus.aor.mobilagent.kernel.ServiceHotel;
 import jus.aor.mobilagent.kernel._Action;
 import jus.aor.mobilagent.kernel.Agent;
-import kernel.Hotel;
-import kernel.Numero;
-import kernel.Parser_Hotel;
+import jus.aor.mobilagent.kernel.Hotel;
+import jus.aor.mobilagent.kernel.Numero;
+import jus.aor.mobilagent.kernel._Service;
 
 /**
  * Classe de test de l'objectif 4
@@ -15,21 +17,19 @@ import kernel.Parser_Hotel;
 public class LookForHotel extends Agent{
 
 	private static final long serialVersionUID = 1L;
-        private List<Hotel> _listeHotel;
-        private Map<Hotel, Numero> _mapHotelsNumeros;
-        private String _localisation;
+	private List<Hotel> _listeHotel;
+	private Map<Hotel, Numero> _mapHotelsNumeros;
+	private String _localisation;
 
 	/**
-	  * construction d'un agent de type LookForHotel.
-	  * @param args aucun argument n'est requis
-	  */
-        // public LookForHotel(Object... args) {}
-	 
-           public LookForHotel(Object... args)
-           {
-               this._localisation = args[0].toString();
-               _listeHotel = new ArrayList<Hotel>();
-           }
+	 * construction d'un agent de type LookForHotel.
+	 * @param args aucun argument n'est requis
+	 */ 
+	public LookForHotel(Object... args){
+		System.out.println("jsui ici");
+		this._localisation = args[0].toString();
+		_listeHotel = new ArrayList<Hotel>();
+	}
         
 	 /**
 	 * l'action à entreprendre sur les serveurs visités  
@@ -40,7 +40,7 @@ public class LookForHotel extends Agent{
 
 		@Override
 		public void execute() {
-			
+			System.err.println("REvenu okay !!");
 		}
 	};
         
@@ -53,7 +53,13 @@ public class LookForHotel extends Agent{
 
 		@Override
 		public void execute() {
-                    LookForHotel.this._listeHotel.addAll((List<Hotel>)(LookForHotel.this.getAgentServer().getService("ServiceHotel").call(LookForHotel.this._localisation)));
+			_Service<?> toto = LookForHotel.this.getAgentServer().getService("ServiceHotel");
+			if (toto == null){
+				System.out.println("Toto est null banane du dimanche !");
+			}
+			System.out.println(LookForHotel.this._localisation);
+			Object temp = toto.call(LookForHotel.this._localisation);
+			LookForHotel.this._listeHotel.addAll((List<Hotel>)temp);
 		}
 	};
         
@@ -74,10 +80,8 @@ public class LookForHotel extends Agent{
 	 * @see jus.aor.mobilagent.kernel.Agent#retour()
 	 */
 	//@Override
-	protected _Action retour()
-        {
-		return doIt;
-                
+	protected _Action retour(){
+		return doIt;         
 	}
 
 }

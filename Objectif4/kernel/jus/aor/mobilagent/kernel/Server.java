@@ -63,7 +63,6 @@ public final class Server {
 	public final void addService(String name, String classeName, String codeBase, Object... args) {
 		try {
 			//Instanciation d'un service
-			((BAMLoader)this.getClass().getClassLoader()).addURL(codeBase);
         	Class<?> classe = (Class<?>)Class.forName(classeName,true,this.getClass().getClassLoader());
         	_Service<?> service = (_Service<?>)classe.getConstructor(Object[].class).newInstance(args);
 			

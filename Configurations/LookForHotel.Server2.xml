@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE HTML PUBLIC  "-//W3C//DTD HTML 4.0 Transitional//EN" "Server.dtd"> 
+<server>
+	<port value="4002"/>
+	<service name="ServiceHotel" codebase="/home/aurelien/jar/LookForHotel.jar" class="jus.aor.mobilagent.kernel.ServiceHotel" args="/home/aurelien/AR/RICM4_AR_Projet_aplp/DataStore/Hotels2.xml"/>
+</server>

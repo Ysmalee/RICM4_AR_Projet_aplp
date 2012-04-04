@@ -77,7 +77,7 @@ public class Starter{
 	}
 	public void createServer(int port, String name) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
 		loader = new BAMLoader();
-		loader.addURL("jar/MobilAgent.jar");
+		loader.addURL("/home/aurelien/jar/MobilAgent.jar");
 		classe = (Class<?>)Class.forName("jus.aor.mobilagent.kernel.Server",true,loader);
 		server = classe.getConstructor(int.class,String.class).newInstance(port,name);
 	}
@@ -107,6 +107,7 @@ public class Starter{
 	protected void addService(String name, String classeName, String codeBase, Object... args) {
 		Method method;
 		try{
+			((BAMLoader)this.getClass().getClassLoader()).addURL(codeBase);
 			method = classe.getDeclaredMethod("addService",String.class,String.class,String.class,Object[].class);
 			method.setAccessible(true);
 			method.invoke(server,name,classeName,codeBase,args);
