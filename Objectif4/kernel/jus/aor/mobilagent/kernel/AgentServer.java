@@ -23,11 +23,8 @@ public class AgentServer extends Thread{
 	/** Socket de l'agent */
 	private Socket agentSocket;
 	
-	/**Jar contenant les services */
-	Jar services;
 	/** Map contenant les différents sesrvices offerts par le serveur */
 	Map<String,_Service<?>> _services = new HashMap<String,_Service<?>>();
-	
 	
 	/**Constructeur*/
     public AgentServer(int port, String name){

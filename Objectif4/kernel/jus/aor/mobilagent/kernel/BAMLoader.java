@@ -30,11 +30,14 @@ public class BAMLoader extends URLClassLoader {
 	 */
 	protected void addURL(String jar) throws IOException{
 		try {
-			ressources = new Jar(jar);
+			Jar j = new Jar(jar);
+			if (ressources == null){
+				ressources = j;
+			}
+			this.integrateCode(j);
 		} catch (IOException e) {
 			throw new IOException("Erreur lors de l'ajout du JAR", e);
 		}
-		this.integrateCode(ressources);
 	}
 	
 	/**
@@ -62,7 +65,9 @@ public class BAMLoader extends URLClassLoader {
 	 * @param jar
 	 */
 	public void integrateCode(Jar jar){
-		ressources = jar;
+		if (ressources == null){
+			ressources = jar;
+		}
 		for(Map.Entry<String,byte[]> e : jar.classIterator()){
 			String name = e.getKey();
 			byte[] classe = e.getValue();
@@ -70,6 +75,9 @@ public class BAMLoader extends URLClassLoader {
 		}
 	}
 	
+	/**
+	 * Méthode toString()
+	 */
 	public String toString(){
 		String buff = "";
 		for(String e : cache.keySet()){
