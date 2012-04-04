@@ -63,9 +63,8 @@ public final class Server {
 	public final void addService(String name, String classeName, String codeBase, Object... args) {
 		try {
 			//Instanciation d'un service
-			BAMLoader serviceLoader = new BAMLoader();
-			serviceLoader.addURL(codeBase);
-        	Class<?> classe = (Class<?>)Class.forName(classeName,true,serviceLoader);
+			((BAMLoader)this.getClass().getClassLoader()).addURL(codeBase);
+        	Class<?> classe = (Class<?>)Class.forName(classeName,true,this.getClass().getClassLoader());
         	_Service<?> service = (_Service<?>)classe.getConstructor(Object[].class).newInstance(args);
 			
         	//Ajout du service
@@ -89,7 +88,6 @@ public final class Server {
 			//Création de l'agent
 			BAMLoader agentLoader = new BAMLoader(new URL[]{},this.getClass().getClassLoader());
         	agentLoader.addURL(codeBase);
-        	System.out.println(agentLoader.toString());
         	Class<?> classe = (Class<?>)Class.forName(classeName,true,agentLoader);
         	Constructor<?> c = classe.getConstructor(Object[].class);
         	Agent runningAgent = (Agent)c.newInstance(new Object[]{args});

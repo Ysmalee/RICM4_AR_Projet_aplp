@@ -3,12 +3,11 @@
 <project basedir="." default="build" name="Mobil-Agent-Objectif3">
     <property environment="env"/>
     <property name="Objectif3.link" value="kernel"/>
-    <property name="ECLIPSE_HOME" value="../../../../usr/share/eclipse"/>
-    <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.7"/>
     <property name="source" value="1.7"/>
     <path id="TPMobilAgent.classpath">
         <pathelement location="kernel/bin"/>
+	<pathelement location="kernel"/>
         <pathelement location="../lib/jus.util.jar"/>
     </path>
 
@@ -39,7 +38,7 @@
 </target>
 
 <!-- Exécution du projet-->
-<target name="Server1">
+<target name="Server1" depends="MobilAgent">
         <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
             <jvmarg line="-DLEVEL=FINE"/>
             <arg line="&quot;../Configurations/hello.server1.xml&quot; &quot;Server1&quot;"/>
@@ -47,7 +46,7 @@
         </java>
 </target>
     
-<target name="Starter">
+<target name="Starter" depends="MobilAgent">
         <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
             <jvmarg line="-DLEVEL=FINE"/>
             <arg line="&quot;../Configurations/hello.client1.xml&quot; &quot;MainServer&quot;"/>
@@ -55,7 +54,7 @@
         </java>
 </target>
     
-<target name="Server2">
+<target name="Server2" depends="MobilAgent">
         <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
             <jvmarg line="-DLEVEL=FINE"/>
             <arg line="&quot;../Configurations/hello.server2.xml&quot; &quot;Server2&quot;"/>

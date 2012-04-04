@@ -3,8 +3,6 @@
 <project basedir="." default="build" name="Mobil-Agent-Objectif3">
     <property environment="env"/>
     <property name="Objectif3.link" value="hello"/>
-    <property name="ECLIPSE_HOME" value="../../../../usr/share/eclipse"/>
-    <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.7"/>
     <property name="source" value="1.7"/>
     <path id="TPMobilAgent.classpath">
