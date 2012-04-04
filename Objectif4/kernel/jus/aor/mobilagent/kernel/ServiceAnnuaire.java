@@ -1,4 +1,4 @@
-package kernel;
+package jus.aor.mobilagent.kernel;
 
 import java.io.File;
 import java.util.List;

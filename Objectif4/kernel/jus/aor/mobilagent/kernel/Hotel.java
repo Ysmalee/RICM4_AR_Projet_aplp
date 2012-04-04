@@ -1,4 +1,4 @@
-package kernel;
+package jus.aor.mobilagent.kernel;
 
 public class Hotel {
 	

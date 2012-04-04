@@ -1,4 +1,4 @@
-package kernel;
+package jus.aor.mobilagent.kernel;
 
 public class Numero {
 	/** le numéro de téléphone */
