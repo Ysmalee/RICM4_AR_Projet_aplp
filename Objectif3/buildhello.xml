@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<project basedir="." default="build" name="Mobil-Agent-Objectif3">
+    <property environment="env"/>
+    <property name="Objectif3.link" value="hello"/>
+    <property name="ECLIPSE_HOME" value="../../../../usr/share/eclipse"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <path id="TPMobilAgent.classpath">
+        <pathelement location="../lib/jus.util.jar"/>
+	<pathelement location="jar/MobilAgent.jar"/>
+    </path>
+
+<!-- Création des dossiers --> 
+<target name="init">
+        <mkdir dir="hello/bin"/>
+	<mkdir dir="jar"/>	
+</target>
+
+<!-- Build -->  
+<target depends="build-project" name="build"/>
+    
+<target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" destdir="hello/bin" source="${source}" includeantruntime="false" target="${target}">
+            <src path="${Objectif3.link}"/>
+            <classpath refid="TPMobilAgent.classpath"/>
+        </javac>
+</target>
+
+<!-- Création du jar Hello-->
+<target name="Hello" depends="build-project">
+	<jar destfile="jar/Hello.jar" basedir="hello/bin"/>
+</target>
+
+<!-- Suppression des .class -->    
+<target name="clean">
+	<delete dir="hello/bin"/>
+	<delete dir="jar"/>
+</target>
+
+<!-- ALL -->
+<target name="all" depends="init,build-project,Hello"/>
+
+</project>

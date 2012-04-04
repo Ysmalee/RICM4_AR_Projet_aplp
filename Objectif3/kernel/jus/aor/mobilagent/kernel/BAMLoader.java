@@ -70,6 +70,9 @@ public class BAMLoader extends URLClassLoader {
 		}
 	}
 	
+	/**
+	 * Méthode toString()
+	 */
 	public String toString(){
 		String buff = "";
 		for(String e : cache.keySet()){

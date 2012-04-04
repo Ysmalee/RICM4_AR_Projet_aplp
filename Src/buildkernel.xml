@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<project basedir="." default="build" name="Mobil-Agent-Objectif3">
+    <property environment="env"/>
+    <property name="Objectif3.link" value="kernel"/>
+    <property name="ECLIPSE_HOME" value="../../../../usr/share/eclipse"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <path id="TPMobilAgent.classpath">
+        <pathelement location="kernel/bin"/>
+        <pathelement location="../lib/jus.util.jar"/>
+    </path>
+
+<!-- Création des dossiers --> 
+<target name="init">
+        <mkdir dir="kernel/bin"/>
+	<mkdir dir="jar"/>
+</target>
+
+<!-- Build -->  
+<target depends="build-project" name="build"/>
+    
+<target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" destdir="kernel/bin" source="${source}" includeantruntime="false" target="${target}">
+            <src path="${Objectif3.link}"/>
+            <classpath refid="TPMobilAgent.classpath"/>
+        </javac>
+</target>
+
+<!-- Création du jar MobilAgent-->
+<target name="MobilAgent" depends="build-project">
+	<jar destfile="jar/MobilAgent.jar" basedir="kernel/bin">
+		<manifest>
+			<attribute name="Main-Class" value="Starter"/>
+		</manifest>		
+	</jar>	
+</target>
+
+<!-- Exécution du projet-->
+<target name="Server1">
+        <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
+            <jvmarg line="-DLEVEL=FINE"/>
+            <arg line="&quot;../Configurations/hello.server1.xml&quot; &quot;Server1&quot;"/>
+            <classpath refid="TPMobilAgent.classpath"/>
+        </java>
+</target>
+    
+<target name="Starter">
+        <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
+            <jvmarg line="-DLEVEL=FINE"/>
+            <arg line="&quot;../Configurations/hello.client1.xml&quot; &quot;MainServer&quot;"/>
+            <classpath refid="TPMobilAgent.classpath"/>
+        </java>
+</target>
+    
+<target name="Server2">
+        <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
+            <jvmarg line="-DLEVEL=FINE"/>
+            <arg line="&quot;../Configurations/hello.server2.xml&quot; &quot;Server2&quot;"/>
+            <classpath refid="TPMobilAgent.classpath"/>
+        </java>
+</target>
+
+<!-- Suppression des .class -->    
+<target name="clean">
+	<delete dir="kernel/bin"/>
+	<delete dir="jar"/>
+</target>
+
+<!-- ALL -->
+<target name="all" depends="init,build-project,MobilAgent"/>
+
+</project>
