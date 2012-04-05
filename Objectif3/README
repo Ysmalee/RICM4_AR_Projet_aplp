@@ -1,0 +1,23 @@
+/*****************************************************************************/
+/*                        Projet AR - 2012 - Objectif 3                      */
+/* AUFOFRT Timothée - EID Timothée - TCHOUNIKINE Nicolas - CLAVELIN Aurélien */
+/*****************************************************************************/
+
+/** COMPILATION
+	Execution des commandes :
+	Attention, le buildkernel doit être fait en premier !
+		ant -f buildkernel.xml all
+		ant -f buildhello.xml all
+
+	
+
+/** EXECUTION
+	Il faut lancer les serveurs "à visiter" puis le serveur lançant l'agent.
+		ant -f buildkernel.xml Server1
+		ant -f buildkernel.xml Server2
+		ant -f buildkernel.xml Starter
+
+/** CLEAN
+	On dispose de fonctions clean pour chacun des builders.
+		ex : ant -f buildkernel.xml clean
+
