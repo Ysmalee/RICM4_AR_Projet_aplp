@@ -1,0 +1,28 @@
+/*****************************************************************************/
+/*                        Projet AR - 2012 - Objectif 4                      */
+/* AUFOFRT Timothée - EID Timothée - TCHOUNIKINE Nicolas - CLAVELIN Aurélien */
+/*****************************************************************************/
+
+/** COMPILATION
+	Il faut créer les 4 .jar avec les commande suivantes :
+		ant -f buildkernel.xml all
+		ant -f buildserviceAnnuaire.xml all
+		ant -f buildserviceHotel.xml all
+		ant -f buildagent.xml all
+
+	Attention, le buildkernel doit être fait en premier !
+
+/** EXECUTION
+	Il faut lancer les 4 serveurs Hotel et le serveur Annuaire puis le 
+	serveur lançant l'agent.
+		ant -f buildkernel.xml Server1
+		ant -f buildkernel.xml Server2
+		ant -f buildkernel.xml Server3
+		ant -f buildkernel.xml Server4
+		ant -f buildkernel.xml ServerAnnuaire
+		ant -f buildkernel.xml Starter
+
+/** CLEAN
+	On dispose de fonctions clean pour chacun des builders.
+		ex : ant -f buildkernel.xml clean
+
