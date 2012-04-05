@@ -2,5 +2,5 @@
 <!DOCTYPE HTML PUBLIC  "-//W3C//DTD HTML 4.0 Transitional//EN" "Server.dtd"> 
 <server>
 	<port value="4005"/>
-	<service name="ServiceAnnuaire" codebase="/home/tim/jar/ServiceAnnuaire.jar" class="jus.aor.mobilagent.kernel.ServiceAnnuaire" args="/home/tim/RICM4_AR_Projet_aplp/DataStore/Annuaire.xml"/>
+	<service name="ServiceAnnuaire" codebase="jar/ServiceAnnuaire.jar" class="jus.aor.mobilagent.serviceAnnuaire.ServiceAnnuaire" args="../DataStore/Annuaire.xml"/>
 </server>
