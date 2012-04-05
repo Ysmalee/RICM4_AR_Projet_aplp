@@ -4,7 +4,7 @@
 /*****************************************************************************/
 
 /** COMPILATION
-	Il faut créer les 4 .jar avec les commande suivantes :
+	Il faut créer les 4 .jar avec les commandes suivantes :
 		ant -f buildkernel.xml all
 		ant -f buildserviceAnnuaire.xml all
 		ant -f buildserviceHotel.xml all
@@ -13,7 +13,7 @@
 	Attention, le buildkernel doit être fait en premier !
 
 /** EXECUTION
-	Il faut lancer les 4 serveurs Hotel et le serveur Annuaire puis le 
+	Il faut lancer les 4 serveurs d'hotel et le serveur annuaire, puis le 
 	serveur lançant l'agent.
 		ant -f buildkernel.xml Server1
 		ant -f buildkernel.xml Server2
