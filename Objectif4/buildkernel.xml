@@ -41,7 +41,7 @@
 <target name="Starter" depends="MobilAgent">
         <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
             <jvmarg line="-DLEVEL=FINE"/>
-            <arg line="&quot;../Configurations/hello.client1.xml&quot; &quot;MainServer&quot;"/>
+            <arg line="&quot;../Configurations/LookForHotel.MainServer.xml&quot; &quot;MainServer&quot;"/>
             <classpath refid="TPMobilAgent.classpath"/>
         </java>
 </target>
@@ -62,33 +62,33 @@
         </java>
 </target>
 
-<target name="Server3">
+<target name="Server3" depends="MobilAgent">
         <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
 	    <jvmarg line="-DLEVEL=FINE"/>
             <arg line="&quot;../Configurations/LookForHotel.Server3.xml&quot; &quot;Server3&quot;"/>
-            <classpath refid="MobilAgent.classpath"/>
+            <classpath refid="TPMobilAgent.classpath"/>
         </java>
 </target>
 
-<target name="Server4">
+<target name="Server4" depends="MobilAgent">
         <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
 	    <jvmarg line="-DLEVEL=FINE"/>
             <arg line="&quot;../Configurations/LookForHotel.Server4.xml&quot; &quot;Server4&quot;"/>
-            <classpath refid="MobilAgent.classpath"/>
+            <classpath refid="TPMobilAgent.classpath"/>
         </java>
 </target>
 
-<target name="ServerAnnuaire">
+<target name="ServerAnnuaire" depends="MobilAgent">
         <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
+	    <jvmarg line="-DLEVEL=FINE"/>
             <arg line="&quot;../Configurations/LookForHotel.ServerAnnuaire.xml&quot; &quot;ServerAnnuaire&quot;"/>
-            <classpath refid="MobilAgent.classpath"/>
+            <classpath refid="TPMobilAgent.classpath"/>
         </java>
 </target>
 
 <!-- Suppression des .class -->    
 <target name="clean">
 	<delete dir="kernel/bin"/>
-	<delete dir="jar"/>
 </target>
 
 <!-- ALL -->
