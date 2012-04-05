@@ -2,5 +2,5 @@
 <!DOCTYPE HTML PUBLIC  "-//W3C//DTD HTML 4.0 Transitional//EN" "Server.dtd"> 
 <server>
 	<port value="4001"/>
-	<service name="ServiceHotel" codebase="/home/aurelien/jar/LookForHotel.jar" class="jus.aor.mobilagent.kernel.ServiceHotel" args="/home/aurelien/AR/RICM4_AR_Projet_aplp/DataStore/Hotels1.xml"/>
+	<service name="ServiceHotel" codebase="/home/tim/jar/ServiceHotel.jar" class="jus.aor.mobilagent.kernel.ServiceHotel" args="/home/tim/RICM4_AR_Projet_aplp/DataStore/Hotels1.xml"/>
 </server>

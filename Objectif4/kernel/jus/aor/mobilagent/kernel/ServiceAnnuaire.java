@@ -1,32 +1,28 @@
 package jus.aor.mobilagent.kernel;
 
 import java.io.File;
-import java.util.List;
-import java.util.Map;
 
-public class ServiceAnnuaire implements jus.aor.mobilagent.kernel._Service<Map<Hotel, Numero>> {
+public class ServiceAnnuaire implements jus.aor.mobilagent.kernel._Service<Numero> {
     Parser_Annuaire parser;
    
-    public ServiceAnnuaire(Object... args) throws Exception
-    {
-        this.parser = new Parser_Annuaire(new File(args[0].toString()));
+    public ServiceAnnuaire(Object... args) throws Exception {
+    	String[] path = (String[])(args[0]);
+    	File f = new File(path[0]);
+    	if (!f.exists()){
+    		throw new Exception("Fichier de données non existant");
+    	}
+        this.parser = new Parser_Annuaire(f);
     }
     
     @Override
     // Param[0] -> Liste d'hotel
-    public Map<Hotel, Numero> call(Object... params) throws IllegalArgumentException {
-        Map<Hotel, Numero> mapHotelNumero = null;
-        List<Hotel> listeHotels = null;
-        try {
-            listeHotels = (List<Hotel>) params[0];
-            
-            for (Hotel h : listeHotels) {
-                mapHotelNumero.put(h, this.parser.get_numero_from_xml(h.name));
-            }
-            
-        } catch (Exception e) {
-            System.out.println("Erreur lors du parsage de l'annuaire");
+    public Numero call(Object... params) throws IllegalArgumentException {
+    	String name = null;
+        if (params[0] instanceof String){
+        	name = (String) params[0];
+        	return this.parser.get_numero_from_xml(name);
+        } else {
+        	throw new IllegalArgumentException("Problème avec params dans la méthode call de ServiceAnnuaire.");
         }
-        return mapHotelNumero;
     }
 }

@@ -77,7 +77,7 @@ public class Starter{
 	}
 	public void createServer(int port, String name) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
 		loader = new BAMLoader();
-		loader.addURL("/home/aurelien/jar/MobilAgent.jar");
+		loader.addURL("/home/tim/jar/MobilAgent.jar");
 		classe = (Class<?>)Class.forName("jus.aor.mobilagent.kernel.Server",true,loader);
 		server = classe.getConstructor(int.class,String.class).newInstance(port,name);
 	}
@@ -107,12 +107,15 @@ public class Starter{
 	protected void addService(String name, String classeName, String codeBase, Object... args) {
 		Method method;
 		try{
-			((BAMLoader)this.getClass().getClassLoader()).addURL(codeBase);
+			loader.addURL(codeBase);
+			
+        	//Appel de la méthode de Server
 			method = classe.getDeclaredMethod("addService",String.class,String.class,String.class,Object[].class);
 			method.setAccessible(true);
-			method.invoke(server,name,classeName,codeBase,args);
+			method.invoke(server, name,classeName,codeBase,new Object[]{args});
+			
 		}catch(Exception e){
-			logger.log(Level.FINE," erreur durant le lancement du serveur",e);
+			logger.log(Level.FINE," erreur durant le lancement du service",e);
 		}
 	}
 	/**
@@ -153,7 +156,7 @@ public class Starter{
 			method.setAccessible(true);
 			method.invoke(server, classeName, args, codeBase, serverAddress, serverAction);
 		}catch(Exception e){
-			logger.log(Level.FINE," erreur durant le lancement du serveur",e);
+			logger.log(Level.FINE," erreur durant le déploiement de l'agent",e);
 		}
 	}
 	

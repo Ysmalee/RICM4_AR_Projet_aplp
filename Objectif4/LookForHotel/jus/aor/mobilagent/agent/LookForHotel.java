@@ -1,10 +1,10 @@
 package jus.aor.mobilagent.agent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jus.aor.mobilagent.kernel.ServiceHotel;
 import jus.aor.mobilagent.kernel._Action;
 import jus.aor.mobilagent.kernel.Agent;
 import jus.aor.mobilagent.kernel.Hotel;
@@ -26,9 +26,9 @@ public class LookForHotel extends Agent{
 	 * @param args aucun argument n'est requis
 	 */ 
 	public LookForHotel(Object... args){
-		System.out.println("jsui ici");
 		this._localisation = args[0].toString();
 		_listeHotel = new ArrayList<Hotel>();
+		_mapHotelsNumeros=new HashMap<Hotel, Numero>();
 	}
         
 	 /**
@@ -40,7 +40,7 @@ public class LookForHotel extends Agent{
 
 		@Override
 		public void execute() {
-			System.err.println("REvenu okay !!");
+			System.err.println("Action doIt !!!");
 		}
 	};
         
@@ -54,9 +54,6 @@ public class LookForHotel extends Agent{
 		@Override
 		public void execute() {
 			_Service<?> toto = LookForHotel.this.getAgentServer().getService("ServiceHotel");
-			if (toto == null){
-				System.out.println("Toto est null banane du dimanche !");
-			}
 			System.out.println(LookForHotel.this._localisation);
 			Object temp = toto.call(LookForHotel.this._localisation);
 			LookForHotel.this._listeHotel.addAll((List<Hotel>)temp);
@@ -72,16 +69,18 @@ public class LookForHotel extends Agent{
 
 		@Override
 		public void execute() {
-                    LookForHotel.this._mapHotelsNumeros = (Map<Hotel, Numero>)(LookForHotel.this.getAgentServer().getService("ServiceAnnuaire").call(LookForHotel.this._listeHotel));
+			_Service<?> service = LookForHotel.this.getAgentServer().getService("ServiceAnnuaire");
+			for (Hotel h: LookForHotel.this._listeHotel) {
+				Numero num = (Numero) (service.call(h.getName()));
+				LookForHotel.this._mapHotelsNumeros.put(h, num);
+			}
 		}
 	};
 	
-	/* (non-Javadoc)
-	 * @see jus.aor.mobilagent.kernel.Agent#retour()
-	 */
-	//@Override
-	protected _Action retour(){
-		return doIt;         
+	@Override
+	public void retour(){  
+		System.out.println("La taille de la liste d'hôtels est : ");
+		System.out.println(this._listeHotel.size());
 	}
 
 }

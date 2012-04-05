@@ -10,13 +10,16 @@ import java.io.Serializable;
  * @author  Morat
  */
 public interface _Action extends Serializable{
-	/** l'action vide */
+	
+	/**
+	 * L'action vide
+	 */
 	public static final _Action NIHIL = new _Action() {
 
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		public void execute() {System.out.println("coucou");}
+		public void execute() {}
 	}; 
 	
 	/**

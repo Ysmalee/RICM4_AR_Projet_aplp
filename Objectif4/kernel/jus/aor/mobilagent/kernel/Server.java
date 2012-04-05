@@ -28,6 +28,7 @@ public final class Server {
 	protected String loggerName;
 	/** le logger de ce serveur */
 	protected Logger logger=null;
+	
 	/**
 	 * Démarre un serveur de type mobilagent 
 	 * @param port le port d'écoute du serveur d'agent 
@@ -49,7 +50,7 @@ public final class Server {
 			System.out.println("Lancement du serveur d'agent");
 			agentServer.start();
 		}catch(Exception ex){
-			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
+			logger.log(Level.FINE," erreur durant l'instanciation du serveur"+this,ex);
 			return;
 		}
 	}
@@ -61,16 +62,17 @@ public final class Server {
 	 * @param args arguments de construction du service
 	 */
 	public final void addService(String name, String classeName, String codeBase, Object... args) {
-		try {
+		try {		
 			//Instanciation d'un service
         	Class<?> classe = (Class<?>)Class.forName(classeName,true,this.getClass().getClassLoader());
-        	_Service<?> service = (_Service<?>)classe.getConstructor(Object[].class).newInstance(args);
-			
+        	Constructor<?> c = classe.getConstructor(Object[].class);
+        	_Service<?> ser = (_Service<?>)(c.newInstance(new Object[]{args}));
+        	
         	//Ajout du service
-        	agentServer.addService(name, service);
+        	agentServer.addService(name, ser);
         	
 		}catch(Exception ex){
-			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
+			logger.log(Level.FINE," erreur durant l'instanciation du service"+this,ex);
 			return;
 		}
 	}
@@ -115,7 +117,7 @@ public final class Server {
         	runningAgent.start();
         	
    		}catch(Exception ex){
-			logger.log(Level.FINE," erreur durant le lancement du serveur"+this,ex);
+			logger.log(Level.FINE," erreur durant le lancement de l'agent"+this,ex);
 			return;
 		}
 	}

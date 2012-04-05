@@ -2,10 +2,12 @@
 <!DOCTYPE HTML PUBLIC  "-//W3C//DTD HTML 4.0 Transitional//EN" "Server.dtd"> 
 <server>
 	<port value="4000"/>
-	<agent class="jus.aor.mobilagent.agent.LookForHotel" codebase="/home/aurelien/jar/LookForHotel.jar" args="Paris">
+	<agent class="jus.aor.mobilagent.agent.LookForHotel" codebase="/home/tim/jar/LookForHotel.jar" args="Paris">
 		<etape server="mobilagent://localhost:4001/" action="doHotel" />
 		<etape server="mobilagent://localhost:4002/" action="doHotel" />
-		<etape server="mobilagent://localhost:4003/" action="doAnnuaire" />
+		<etape server="mobilagent://localhost:4003/" action="doHotel" />
+		<etape server="mobilagent://localhost:4004/" action="doHotel" />
+		<etape server="mobilagent://localhost:4005/" action="doAnnuaire"/>
 	</agent>
 </server>
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE HTML PUBLIC  "-//W3C//DTD HTML 4.0 Transitional//EN" "Server.dtd"> 
 <server>
-	<port value="4003"/>
-	<service name="ServiceAnnuaire" codebase="/home/aurelien/jar/LookForHotel.jar" class="jus.aor.mobilagent.kernel.ServiceAnnuaire" args="/home/aurelien/AR/RICM4_AR_Projet_aplp/DataStore/Annuaire.xml"/>
+	<port value="4005"/>
+	<service name="ServiceAnnuaire" codebase="/home/tim/jar/ServiceAnnuaire.jar" class="jus.aor.mobilagent.kernel.ServiceAnnuaire" args="/home/tim/RICM4_AR_Projet_aplp/DataStore/Annuaire.xml"/>
 </server>

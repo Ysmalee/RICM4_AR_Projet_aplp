@@ -4,12 +4,16 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 
 public class Agent extends Thread implements _Agent{
     
 	private static final long serialVersionUID = 1L;
 	private transient AgentServer server;
     private Route route;
+    
+	/** Date de début */
+    private Date debut;
   
     /**
      * Initialisation de l'AgentServer
@@ -22,6 +26,7 @@ public class Agent extends Thread implements _Agent{
         this.server.setName(serverName);
 		try {
 			if (route==null){
+				debut = new Date();
 				route = new Route(new Etape(new URI(serverName), _Action.NIHIL));
 			}
 		} catch (URISyntaxException e) {
@@ -93,4 +98,22 @@ public class Agent extends Thread implements _Agent{
     public AgentServer getAgentServer(){
     	return this.server;
     }
+    
+    /**
+     * Getter de l'étape retour de l'agent
+     * @return etape retour
+     */
+    public Etape getEtapeRetour(){
+    	return this.getRoute().retour;
+    }
+    
+    /**
+     * Retourne la date à laquelle le programme a commencé
+     * @return date début
+     */
+    public Date getDateDebut(){
+    	return debut;
+    }
+    
+    public void retour(){}
 }

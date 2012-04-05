@@ -1,8 +1,11 @@
 package jus.aor.mobilagent.kernel;
 
-public class Hotel {
+import java.io.Serializable;
+
+public class Hotel implements Serializable{
 	
-    /** la localisation de l'hôtel */
+	private static final long serialVersionUID = 1L;
+	/** la localisation de l'hôtel */
     public String localisation;
     /** le nom de l'hôtel */
     public String name;
@@ -24,5 +27,9 @@ public class Hotel {
     @Override
     public String toString() {
         return "Hotel{"+name+","+localisation+"}";
+    }
+    
+    public String getName() {
+    	return this.name;
     }
 }

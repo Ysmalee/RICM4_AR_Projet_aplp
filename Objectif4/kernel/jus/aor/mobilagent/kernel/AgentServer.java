@@ -8,11 +8,11 @@ import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 public class AgentServer extends Thread{
 	
@@ -22,7 +22,9 @@ public class AgentServer extends Thread{
 	private String nameServer;
 	/** Socket de l'agent */
 	private Socket agentSocket;
-	
+	/** Date de fin*/
+	private Date fin;
+    
 	/** Map contenant les différents sesrvices offerts par le serveur */
 	Map<String,_Service<?>> _services = new HashMap<String,_Service<?>>();
 	
@@ -58,8 +60,8 @@ public class AgentServer extends Thread{
     	try{
     		ss = new ServerSocket(_port);
 	    	//Attente d'un agent
-    		System.out.println("Waiting for agent...");
     		while (true){
+    			System.out.println("Waiting for agent...");
 				agentSocket = ss.accept();
 				
 				//Récupération de l'agent
@@ -74,6 +76,10 @@ public class AgentServer extends Thread{
 				
 		    	//L'agent exécute son action courante
 				if (agentRecu.getRoute().isFinished()){
+					fin=new Date();
+					agentRecu.retour();
+					long duree = fin.getTime()-agentRecu.getDateDebut().getTime();
+					System.out.println("La durée totale d'exécution du programme est de : "+duree+" ms.");
 					System.out.println("Exécution de l'agent terminée !!!");
 				} else {
 					agentRecu.getRoute().get().action.execute();
@@ -131,16 +137,5 @@ public class AgentServer extends Thread{
      */
     public String getNameServer(){
     	return this.nameServer;
-    }
-    
+    }  
 }
-
-
-
-////Récupération du jar de l'agent
-//System.err.println("Récupération du jar de l'agent...");
-//ObjectInputStream ois = new ObjectInputStream(agentSocket.getInputStream());
-//Jar jar = (Jar)ois.readObject();
-//BAMLoader agentLoader = new BAMLoader();
-//agentLoader.integrateCode(jar);
-//System.err.println("Jar récupéré...");

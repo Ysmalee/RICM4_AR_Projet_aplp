@@ -2,14 +2,17 @@ package jus.aor.mobilagent.kernel;
 
 import java.io.File;
 import java.util.List;
-import org.jdom.JDOMException;
 
-public class ServiceHotel implements jus.aor.mobilagent.kernel._Service<List<Hotel>> {
+public class ServiceHotel implements _Service<List<Hotel>> {
     private Parser_Hotel parser;
     
-    public ServiceHotel(Object... args) throws Exception
-    {
-        this.parser = new Parser_Hotel(new File(args[0].toString()));
+    public ServiceHotel(Object... args) throws Exception {
+    	String[] path = (String[])(args[0]);
+    	File f = new File(path[0]);
+    	if (!f.exists()){
+    		throw new Exception("Fichier de données non existant");
+    	}
+        this.parser = new Parser_Hotel(f);
     }
     
     @Override

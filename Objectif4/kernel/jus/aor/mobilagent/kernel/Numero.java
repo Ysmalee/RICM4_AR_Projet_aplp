@@ -1,6 +1,10 @@
 package jus.aor.mobilagent.kernel;
 
-public class Numero {
+import java.io.Serializable;
+
+public class Numero implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	/** le numéro de téléphone */
 	public String numero;
 	/**
