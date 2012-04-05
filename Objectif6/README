@@ -1,0 +1,33 @@
+/*****************************************************************************/
+/*                        Projet AR - 2012 - Objectif 6                      */
+/* AUFOFRT Timothée - EID Timothée - TCHOUNIKINE Nicolas - CLAVELIN Aurélien */
+/*****************************************************************************/
+
+/** COMPILATION
+	Il faut créer les 4 .jar avec les commandes suivantes :
+		ant -f buildkernel.xml all
+		ant -f buildserviceAnnuaire.xml all
+		ant -f buildserviceHotel.xml all
+		ant -f buildagent.xml all
+
+	Attention, le buildkernel doit être fait en premier !
+
+/** EXECUTION
+	Lancer le serveur Annuaire de services
+		ant -f buildkernel.xml Annuaire_RMI
+	Lancer x/4 serveurs d'hotel et le serveur annuaire. Il n'est pas nécessaire
+	de lancer tous les serveurs d'hotels. En effet, à leur lancement, ils
+	s'enregistreront dans l'annuaire de services, et l'agent lookforhotel
+	parcourera uniquement les services lancés.
+		ant -f buildkernel.xml Server1
+		ant -f buildkernel.xml Server2
+		ant -f buildkernel.xml Server3
+		ant -f buildkernel.xml Server4
+		ant -f buildkernel.xml ServerAnnuaire
+	Lancer le serveur principale
+		ant -f buildkernel.xml Starter
+
+/** CLEAN
+	On dispose de fonctions clean pour chacun des builders.
+		ex : ant -f buildkernel.xml clean
+

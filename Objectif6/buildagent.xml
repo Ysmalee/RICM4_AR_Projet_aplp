@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<project basedir="." default="build" name="Mobil-Agent-Objectif4">
+    <property environment="env"/>
+    <property name="Objectif4.link" value="LookForHotel"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <path id="TPMobilAgent.classpath">
+        <pathelement location="../lib/jus.util.jar"/>
+	<pathelement location="jar/MobilAgent.jar"/>
+    </path>
+
+<!-- Création des dossiers --> 
+<target name="init">
+        <mkdir dir="LookForHotel/bin"/>
+	<mkdir dir="jar"/>	
+</target>
+
+<!-- Build -->  
+<target depends="build-project" name="build"/>
+    
+<target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" destdir="LookForHotel/bin" source="${source}" includeantruntime="false" target="${target}">
+            <src path="${Objectif4.link}"/>
+            <classpath refid="TPMobilAgent.classpath"/>
+        </javac>
+</target>
+
+<!-- Création du jar LookForHotel-->
+<target name="LookForHotel" depends="build-project">
+	<jar destfile="jar/LookForHotel.jar" basedir="LookForHotel/bin"/>
+</target>
+
+<!-- Suppression des .class -->    
+<target name="clean">
+	<delete dir="LookForHotel/bin"/>
+</target>
+
+<!-- ALL -->
+<target name="all" depends="init,build-project,LookForHotel"/>
+
+</project>

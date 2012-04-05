@@ -1,0 +1,26 @@
+/*****************************************************************************/
+/*                        Projet AR - 2012 - Objectif 1                      */
+/* AUFOFRT Timothée - EID Timothée - TCHOUNIKINE Nicolas - CLAVELIN Aurélien */
+/*****************************************************************************/
+
+/** COMPILATION
+	Il faut créer les 4 .jar avec les commandes suivantes :
+		ant all
+		
+/** EXECUTION
+	Lancer le RMI registry
+		ant registryserver
+	Lancer l'annuaire
+		ant annuaire
+	Lancer les serveurs de chaines d'hotels
+		ant chaine1
+		ant chaine2
+		ant chaine3
+		ant chaine4
+	Lancer le client LookForHotel
+		ant lookforhotel
+
+/** CLEAN
+	On dispose de fonctions clean pour chacun des builders.
+		ex : ant -f buildkernel.xml clean
+
