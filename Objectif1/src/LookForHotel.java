@@ -63,6 +63,8 @@ public class LookForHotel{
 
 		System.out.println("Début de la requête: " + this._localisation);
 		Date debut = new Date();
+		
+		//Récupère la liste des hotels
 		for(int i=0; i<4; i++) {
 			//Récupère l'objet
 			_Chaine c = null;
@@ -81,6 +83,20 @@ public class LookForHotel{
 				}
 			}
 		}
+		
+		//Appel l'annuaire
+		_Annuaire a = null;
+		try {
+			a = (_Annuaire) this._reg.lookup("Annuaire");
+		} catch(Exception e) {
+			throw new Exception("erreur lors de la communication avec le RMI registry", e);
+		}
+		List<Numero> listeNum = new ArrayList<Numero>();
+		for(int i=0; i<listeHotels.size(); i++) {
+			Numero n = a.get(listeHotels.get(i).getName());
+			listeNum.add(n);
+		}
+		
 		Date fin = new Date();
 		System.out.println("Requête terminée: " + listeHotels.size() + " élements en " + (fin.getTime() - debut.getTime()) + "ms");
 		

@@ -1,12 +1,13 @@
-/**
- * J<i>ava</i> U<i>tilities</i> for S<i>tudents</i>
- */
+import java.io.Serializable;
+
 
 /**
  * Un numéro de télephone
  * @author Morat 
  */
-public class Numero {
+public class Numero implements Serializable {
+	private static final long serialVersionUID = 5742210694033143059L;
+
 	/** le numéro de téléphone */
 	public String numero;
 	/**
