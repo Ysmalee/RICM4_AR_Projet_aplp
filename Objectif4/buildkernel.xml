@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<project basedir="." default="build" name="Mobil-Agent-Objectif4">
+    <property environment="env"/>
+    <property name="Objectif4.link" value="kernel"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <path id="TPMobilAgent.classpath">
+        <pathelement location="kernel/bin"/>
+	<pathelement location="kernel"/>
+        <pathelement location="../lib/jus.util.jar"/>
+    </path>
+
+<!-- Création des dossiers --> 
+<target name="init">
+        <mkdir dir="kernel/bin"/>
+	<mkdir dir="jar"/>
+</target>
+
+<!-- Build -->  
+<target depends="build-project" name="build"/>
+    
+<target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" destdir="kernel/bin" source="${source}" includeantruntime="false" target="${target}">
+            <src path="${Objectif4.link}"/>
+            <classpath refid="TPMobilAgent.classpath"/>
+        </javac>
+</target>
+
+<!-- Création du jar MobilAgent-->
+<target name="MobilAgent" depends="build-project">
+	<jar destfile="jar/MobilAgent.jar" basedir="kernel/bin">
+		<manifest>
+			<attribute name="Main-Class" value="Starter"/>
+		</manifest>		
+	</jar>	
+</target>
+
+<!-- Exécution du projet-->
+<target name="Starter" depends="MobilAgent">
+        <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
+            <jvmarg line="-DLEVEL=FINE"/>
+            <arg line="&quot;../Configurations/LookForHotel.MainServer.xml&quot; &quot;MainServer&quot;"/>
+            <classpath refid="TPMobilAgent.classpath"/>
+        </java>
+</target>
+
+<target name="Server1" depends="MobilAgent">
+        <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
+            <jvmarg line="-DLEVEL=FINE"/>
+            <arg line="&quot;../Configurations/LookForHotel.Server1.xml&quot; &quot;Server1&quot;"/>
+            <classpath refid="TPMobilAgent.classpath"/>
+        </java>
+</target>
+    
+<target name="Server2" depends="MobilAgent">
+        <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
+            <jvmarg line="-DLEVEL=FINE"/>
+            <arg line="&quot;../Configurations/LookForHotel.Server2.xml&quot; &quot;Server2&quot;"/>
+            <classpath refid="TPMobilAgent.classpath"/>
+        </java>
+</target>
+
+<target name="Server3" depends="MobilAgent">
+        <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
+	    <jvmarg line="-DLEVEL=FINE"/>
+            <arg line="&quot;../Configurations/LookForHotel.Server3.xml&quot; &quot;Server3&quot;"/>
+            <classpath refid="TPMobilAgent.classpath"/>
+        </java>
+</target>
+
+<target name="Server4" depends="MobilAgent">
+        <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
+	    <jvmarg line="-DLEVEL=FINE"/>
+            <arg line="&quot;../Configurations/LookForHotel.Server4.xml&quot; &quot;Server4&quot;"/>
+            <classpath refid="TPMobilAgent.classpath"/>
+        </java>
+</target>
+
+<target name="ServerAnnuaire" depends="MobilAgent">
+        <java classname="jus.aor.mobilagent.kernel.Starter" failonerror="true" fork="yes">
+	    <jvmarg line="-DLEVEL=FINE"/>
+            <arg line="&quot;../Configurations/LookForHotel.ServerAnnuaire.xml&quot; &quot;ServerAnnuaire&quot;"/>
+            <classpath refid="TPMobilAgent.classpath"/>
+        </java>
+</target>
+
+<!-- Suppression des .class -->    
+<target name="clean">
+	<delete dir="kernel/bin"/>
+</target>
+
+<!-- ALL -->
+<target name="all" depends="init,build-project,MobilAgent"/>
+
+</project>
