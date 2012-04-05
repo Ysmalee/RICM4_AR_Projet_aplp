@@ -60,8 +60,8 @@ public class AgentServer extends Thread{
     	try{
     		ss = new ServerSocket(_port);
 	    	//Attente d'un agent
+			System.out.println("Waiting for agent...");
     		while (true){
-    			System.out.println("Waiting for agent...");
 				agentSocket = ss.accept();
 				
 				//Récupération de l'agent
